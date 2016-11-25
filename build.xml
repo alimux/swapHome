@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<project name="Swap HOME" default="dist">
+
+<property name="autodeploydir" value="../domain/autodeploy" />
+
+<path id="jee">
+  <fileset dir="/usr/local/glassfish-4.1/glassfish/modules/">
+    <include name="*.jar"/>
+  </fileset>
+</path>
+
+<path id="external">
+  <fileset dir="lib/">
+    <include name="*.jar"/>
+  </fileset>
+</path>
+
+<target name="compile" depends="init">
+  <javac srcdir="." destdir="build/WEB-INF/classes" debuglevel="lines,source,vars" debug="true" includeantruntime="false">
+    <classpath refid="jee" />
+    <classpath refid="external" />
+  </javac>
+</target>
+
+<target name="dist" depends="init,compile">
+  <copy todir="build/">
+    <fileset dir="web" includes="**/*" />
+  </copy>
+ <copy todir="build/WEB-INF/lib">
+    <fileset dir="lib" includes="*" />
+  </copy>
+  <jar basedir="build" destfile="dist/swapHome.war" />
+</target>
+
+<target name="deploy" depends="dist">
+  <copy todir="${autodeploydir}" file="dist/swapHome.war" />
+</target>
+
+<target name="init">
+  <mkdir dir="build" />
+  <mkdir dir="build/WEB-INF" />
+  <mkdir dir="build/WEB-INF/lib" />
+  <mkdir dir="build/WEB-INF/classes" />
+  <mkdir dir="dist" />
+</target>
+
+<target name="clear">
+  <antcall target="clean" />
+  <delete dir="build" />
+  <delete dir="dist" />
+</target>
+
+<target name="clean">
+  <delete verbose="true">
+    <fileset dir="." includes="**/*~"  defaultexcludes="no" />
+  </delete>
+</target>
+
+</project>
