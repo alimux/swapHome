@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 build.xml
 build/
 dist/
+=======
+build/
+dist/
+build.xml
+>>>>>>> logan
