@@ -1,4 +1,6 @@
-package SwapHome;
+package SwapHome.User;
+
+
 /*----------------------------------
 class de gestion des connexions
 ----------------------------------*/
@@ -11,7 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+
 
 //temporaire, Uniquement pour simuler base de données
 import fakeDB.*;
@@ -22,38 +26,37 @@ Class de gestion des connexions à l'espace personnel pour le projet SwapHome
 @4 novembre 2016
 */
 
-public class Connect extends HttpServlet
-  {
-    //temporaire pour la fausse DB
-
+public class AuthServlet extends HttpServlet
+{
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+    {
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/user/auth.jsp");
+        rd.forward(request, response);
+    }
+    
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
-      {
-          //récupération des données formulaire
-          String emailUser = request.getParameter("emailUser");
-          String passwordUser = request.getParameter("passwordUser");
-          String pathUrl;
+    {
+        String emailUser = request.getParameter("emailUser");
+        String passwordUser = request.getParameter("passwordUser");
 
-          //test si les valeurs correspondent
-          // A modifier pour enregistrer des valeurs de sessions
-          if(Inscription.dataBase.isValid(emailUser, passwordUser))
-          {
-            User user = Inscription.dataBase.retrieve(emailUser);
-            String message = user.getFirstNameUser()+" "+user.getNameUser();
-            request.setAttribute("message", message);
-            pathUrl = "/espacePerso.jsp";
-          }
-          else
-          {
+        // test si le formulaire est valide
+        if(!RegisterServlet.dataBase.isValid(emailUser, passwordUser))
+        {
             String error = "Erreur, Identifiant / mot de passe incorrect !";
-            request.setAttribute("erreur", error);
-            pathUrl = "/connect.jsp";
-          }
-
-          //envoi des infos et redirection
-          RequestDispatcher rd = this.getServletContext().getRequestDispatcher(pathUrl);
-          rd.forward(request, response);
-
-      }
-  }
+            request.setAttribute("erreur", error);   
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/user/auth.jsp");
+            rd.forward(request, response);
+            return;
+        }
+        
+        // si OK, on met en session et on affiche home
+        HttpSession session = request.getSession();
+        session.setAttribute( "emailUser", emailUser );
+        session.setAttribute( "passwordUser", passwordUser );
+        response.sendRedirect("home");
+    }
+}

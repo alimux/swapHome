@@ -1,45 +1,42 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>Swap Home, inscription</title>
-</head>
-<body>
+<jsp:include page="/partials/header.jsp" />
 <section>
     <h1>Inscription</h1>
     <span class="errorMessage">${erreur}</span>
-    <p>pour vous inscrire, rien de plus simple ! <br /> Il vous suffit de remplir le formulaire d'inscription ci-dessous.é é à</p>
-    <form method="post" action="inscription">
-    <fieldset>
-      <ol>
-        <li>
-      <label>Nom</label>
-      <input type="text" size="20" name="nameUser" required="votre nom"/>
-      <label>Prénom</label>
-      <input type="text" size="20" name="firstNameUser" required=""/>
-    </li>
-    <li>
-      <label>Adresse</label>
-      <textarea name="adressUser" rows="5" required=""></textarea>
-    </li>
-    <li>
-      <label>Code postal</label>
-      <input type="text" size="10" name="zipCodeUser" required=""/>
-      <label>Ville</label>
-      <input type="text" size="20" name="cityUser" required=""/>
-    </li>
-    <li>
-      <label>Email</label><span id="italiqueCommentaire"> *Cet email sera votre nom d'utilisateur.</span>
-      <input type="text" size="20" name="emailUser" required=""/>
-    </li>
-    <li>
-  <input type="submit" value="Validez votre inscription" />
-</li>
-</ol>
-</fieldset>
+    <p>pour vous inscrire, rien de plus simple ! <br /> Il vous suffit de remplir le formulaire d'inscription ci-dessous.</p>
+    
+    <form method="post" action="register">
+        <div class="input-field">
+          <input id="nameUser" name="nameUser" type="text" size="50" class="validate" required>
+          <label for="nameUser">Nom</label>
+        </div>
+        
+        <div class="input-field">
+          <input id="firstNameUser" name="firstNameUser" size="50" type="text" class="validate" required>
+          <label for="firstNameUser">Prénom</label>
+        </div>
+        
+        <div class="input-field">
+          <textarea id="Adresse" class="materialize-textarea" rows="5" required></textarea>
+          <label for="Adresse">Adresse</label>
+        </div>
+        
+        <div class="input-field">
+          <input id="zipCodeUser" name="zipCodeUser" size="10" type="text" class="validate" required>
+          <label for="zipCodeUser">Code postal</label>
+        </div>
+        
+        <div class="input-field">
+          <input id="cityUser" name="cityUser" size="200" type="text" class="validate" required>
+          <label for="cityUser">Ville</label>
+        </div>
+        
+        <div class="input-field">
+          <input id="emailUser" name="emailUser" size="150" type="text" class="validate" required>
+          <label for="emailUser">Email *sera votre nom d'utilisateur</label>
+        </div>
+        
+        <input class="waves-effect waves-light btn" type="submit" value="validez votre inscription"></input>
     </form>
 </section>
-
-</body>
-</html>
+<jsp:include page="/partials/footer.jsp" />

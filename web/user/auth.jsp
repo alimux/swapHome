@@ -1,34 +1,21 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="css/style.css" />
-    <title>Swap Home, connexion...</title>
-  </head>
-  <body>
-    <section>
-    <h1>connnexion</h1>
+<jsp:include page="/partials/header.jsp" />
+<section>
+    <h1>connexion</h1>
 
-    <form method="post" action="connect">
-    <fieldset>
-      <ol>
-    <li>
-      <label>Identifiant : </label>
-      <input type="text" size="20" name="emailUser" required=""/>
-    </li>
-    <li>
-      <label>Mot de passe : </label>
-      <input type="text" size="20" name="passwordUser" required=""/>
-    </li>
-    <li>
-  <input type="submit" value="connexion..." />
-</li>
-<li>
-    <span class="errorMessage">${erreur}</span>
-</li>
-</ol>
-</fieldset>
+    <form method="post" action="auth">
+        <div class="input-field">
+          <input id="emailUser" name="emailUser" type="text" class="validate" required>
+          <label for="emailUser">Adresse email</label>
+        </div>
+        
+        <div class="input-field">
+          <input id="passwordUser" name="passwordUser" type="text" class="validate" required>
+          <label for="passwordUser">Mot de passe</label>
+        </div>
+        <span class="errorMessage">${erreur}</span>
+        
+        <input class="waves-effect waves-light btn" type="submit" value="connexion"></input>
     </form>
-  </body>
-</html>
+</section>
+<jsp:include page="/partials/footer.jsp" />
