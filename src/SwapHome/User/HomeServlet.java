@@ -6,10 +6,10 @@ class de gestion des inscriptions
 ----------------------------------*/
 
 //importation
-import Users.UserDBStub;
-import Users.User;
-import Users.IUserDB;
-import Users.UserHandler;
+import users.db.UserDBStub;
+import users.db.User;
+import users.db.IUserDB;
+import users.db.UserHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;

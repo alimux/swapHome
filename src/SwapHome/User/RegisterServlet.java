@@ -6,11 +6,11 @@ class de gestion des inscriptions
 ----------------------------------*/
 
 //importation
-import Users.UserDBStub;
-import Users.User;
-import Users.IUserDB;
-import Users.UserHandler;
-import Users.UserHibernateSQL;
+import users.db.UserDBStub;
+import users.db.User;
+import users.db.IUserDB;
+import users.db.UserHandler;
+import users.db.UserHibernateSQL;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -47,7 +47,6 @@ public class RegisterServlet extends HttpServlet
     throws ServletException, IOException
     {
       //Récupération des données du formulaire
-      //int idUser = UserHandler.getDb().getNextID();
       String nameUser = request.getParameter("nameUser");
       String firstNameUser = request.getParameter("firstNameUser");
       String adressUser = request.getParameter("adressUser");

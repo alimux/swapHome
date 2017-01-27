@@ -6,7 +6,7 @@ class de gestion des connexions
 ----------------------------------*/
 
 //importation
-import Users.UserHandler;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+import users.db.*;
 
 
 //temporaire, Uniquement pour simuler base de données
@@ -42,6 +43,7 @@ public class AuthServlet extends HttpServlet
     {
         String emailUser = request.getParameter("emailUser");
         String passwordUser = request.getParameter("passwordUser");
+        
 
         // test si le formulaire est valide
         if(!UserHandler.getDb().isValid(emailUser, passwordUser))
@@ -52,6 +54,12 @@ public class AuthServlet extends HttpServlet
             rd.forward(request, response);
             return;
         }
+        User user = new User(emailUser, passwordUser);
+        //recupération des infos de l'utilisateur courant
+        user = UserHandler.getDb().retrieve(emailUser);
+            
+        
+        
         
         // si OK, on met en session et on affiche home
         HttpSession session = request.getSession();

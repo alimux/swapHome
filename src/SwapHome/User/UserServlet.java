@@ -6,7 +6,7 @@ class de gestion des connexions
 
 //importation
 import SwapHome.User.UserServlet.*;
-import Users.UserHandler;
+import users.db.UserHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
