@@ -56,7 +56,7 @@ public class RegisterServlet extends HttpServlet
       String emailUser = request.getParameter("emailUser");
       String countryUser = request.getParameter("countryUser");
       //mettre en place un systeme de gestion de création de mot de passe aléatoire
-      String passwordUser = "mdp"; 
+      String passwordUser = request.getParameter("passwdUser"); 
       String pathUrl;
 
       //a voir implementer un algo de génération de mot de passe
@@ -75,6 +75,7 @@ public class RegisterServlet extends HttpServlet
         {
           // on enregistre en base
           User user = new User( nameUser, firstNameUser, adressUser, zipCodeUser, cityUser ,emailUser, passwordUser, countryUser);
+          this.log("Enregistrement de "+user);
           UserHandler.getDb().createUser(user);
           String bienvenue = firstNameUser+" "+nameUser;
           //envoi d'attributs

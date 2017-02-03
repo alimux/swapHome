@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,8 +8,8 @@
         <title>Swap Home, Partez en vacances en échangeant votre maison !</title>
         <!-- CSS  -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="<%= request.getContextPath() %>/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="<%= request.getContextPath() %>/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
     </head>
     <body>
@@ -17,9 +18,8 @@
         <div class="nav-wrapper container">
           <a id="logo-container" href="#" class="brand-logo">Logo</a>
           <ul class="right hide-on-med-and-down">
-            <li><a href="user/register">Inscription </a></li>
-            <li><a href="user/auth"> connexion</a></li>
-            <li><a href="#">Navbar Link</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/register">Inscription </a></li>
+            <li><a href="<%= request.getContextPath() %>/user/auth"> connexion</a></li>
           </ul>
 
           <ul id="nav-mobile" class="side-nav">
@@ -33,11 +33,11 @@
         <div class="section no-pad-bot">
           <div class="container">
             <br><br>
-            <h1 class="header center teal-text text-lighten-2">SWAPHOME</h1>
+            <h1 class="header center teal-text text-lighten-2"></h1>
 
             <br><br>
 
           </div>
         </div>
-        <div class="parallax"><img src="*.jpg" alt="Unsplashed background img 1"></div>
+        <div class="parallax"><img src="<%= request.getContextPath() %>/images/tempBan.jpg" alt="Unsplashed background img 1"></div>
       </div>
