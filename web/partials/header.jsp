@@ -16,7 +16,7 @@
 
       <nav class="white" role="navigation">
         <div class="nav-wrapper container">
-          <a id="logo-container" href="#" class="brand-logo">Logo</a>
+          <a id="logo-container" href="<%= request.getContextPath() %>/index.jsp" class="brand-logo"><img src="<%= request.getContextPath() %>/images/logoSwapHome.jpg" height="60"></a>
           <ul class="right hide-on-med-and-down">
             <li><a href="<%= request.getContextPath() %>/user/register">Inscription </a></li>
             <li><a href="<%= request.getContextPath() %>/user/auth"> connexion</a></li>
@@ -39,5 +39,5 @@
 
           </div>
         </div>
-        <div class="parallax"><img src="<%= request.getContextPath() %>/images/tempBan.jpg" alt="Unsplashed background img 1"></div>
+        <div class="parallax"><img src="<%= request.getContextPath() %>/images/swapHomeContext.jpg" alt="Unsplashed background img 1"></div>
       </div>
