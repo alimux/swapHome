@@ -28,7 +28,7 @@
                                 <div class="row">
                                   <div class="input-field">
                                     <i class="material-icons prefix">lock_outline</i>
-                                    <input id="icon_password" name="passwordUser" type="text" class="validate" required>
+                                    <input id="icon_password" name="passwordUser" type="password" class="validate" required>
                                     <label for="icon_password">Mot de passe</label>
                                   </div>
 
