@@ -1,97 +1,83 @@
 package SwapHome.User;
 
-
-/*----------------------------------
-class de gestion des inscriptions
-----------------------------------*/
-
-//importation
-import users.db.UserDBStub;
-import users.db.User;
-import users.db.IUserDB;
-import users.db.UserHandler;
-import users.db.UserHibernateSQL;
+import users.db.*;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
-import org.hibernate.SessionFactory;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
-//temporaire, Uniquement pour simuler base de données
 /**
-Class de gestion des inscriptions pour le projet SwapHome
-@author Alexandre DUCREUX
-@4 novembre 2016
-*/
+ * Class which manage registering
+ *
+ * @author Alexandre DUCREUX & Logan Lepage
+ * @4 novembre 2016
+ */
+public class RegisterServlet extends HttpServlet {
 
-public class RegisterServlet extends HttpServlet
-  {
     //UserStubDB
     //public static IUserDB UserHandler.getDb() = new UserDBStub();
     //HibernateSql
-    
+    /**
+     * calling servlet
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/user/register.jsp");
         rd.forward(request, response);
     }
 
+    /**
+     * retrieve form informations
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException
-    {
-      //Récupération des données du formulaire
-      String nameUser = request.getParameter("nameUser");
-      String firstNameUser = request.getParameter("firstNameUser");
-      String adressUser = request.getParameter("adressUser");
-      String tmpzipCodeUser = request.getParameter("zipCodeUser");
-      int zipCodeUser = Integer.parseInt(tmpzipCodeUser);
-      String cityUser = request.getParameter("cityUser");
-      String emailUser = request.getParameter("emailUser");
-      String countryUser = request.getParameter("countryUser");
-      //mettre en place un systeme de gestion de création de mot de passe aléatoire
-      String passwordUser = request.getParameter("passwdUser"); 
-      String pathUrl;
+            throws ServletException, IOException {
+        //Retrieve form info
+        String nameUser = request.getParameter("nameUser");
+        String firstNameUser = request.getParameter("firstNameUser");
+        String adressUser = request.getParameter("adressUser");
+        String tmpzipCodeUser = request.getParameter("zipCodeUser");
+        int zipCodeUser = Integer.parseInt(tmpzipCodeUser);
+        String cityUser = request.getParameter("cityUser");
+        String emailUser = request.getParameter("emailUser");
+        String countryUser = request.getParameter("countryUser");
+        String passwordUser = request.getParameter("passwdUser");
+        String pathUrl;
 
-      //a voir implementer un algo de génération de mot de passe
-
-      /*temp creation d'utilisateur pour la fausse dB
-      A la place de forward, a voir pour remplacer par des sessions & penser à ajouter les attributs à renvoyer dans le formulaire en cas d'email déjà présent
-      Le mot de passe est temporaire */
-      if(UserHandler.getDb().exists(emailUser))
-        {
-          String error = "Impossible de créer le compte utilisateur... Email déjà présent!";
-          request.setAttribute("erreur", error);
-          pathUrl = "/user/register.jsp";
-          //envoi des infos
+        //if not exist back on previous page
+        if (UserHandler.getDb().exists(emailUser)) {
+            String error = "Impossible de créer le compte utilisateur... Email déjà présent!";
+            request.setAttribute("erreur", error);
+            pathUrl = "/user/register.jsp";
+            //sending error
             RequestDispatcher rd = this.getServletContext().getRequestDispatcher(pathUrl);
             rd.forward(request, response);
 
-        }
-        else
-        {
-          // on enregistre en base
-          User user = new User( nameUser, firstNameUser, adressUser, zipCodeUser, cityUser ,emailUser, passwordUser, countryUser);
-          this.log("Enregistrement de "+user);
-          UserHandler.getDb().createUser(user);
-          String bienvenue = firstNameUser+" "+nameUser;
-          //envoi d'attributs
-          request.setAttribute("bienvenue", bienvenue);
-          // si OK, on met en session et on affiche home
+        } else {
+            // recording in DB with hibernate
+            User user = new User(nameUser, firstNameUser, adressUser, zipCodeUser, cityUser, emailUser, passwordUser, countryUser);
+            this.log("Enregistrement de " + user);
+            UserHandler.getDb().createUser(user);
+            String bienvenue = firstNameUser + " " + nameUser;
+            //setting attributes
+            request.setAttribute("bienvenue", bienvenue);
+            //setting session
             HttpSession session = request.getSession();
-            session.setAttribute( "emailUser", emailUser );
-            session.setAttribute( "passwordUser", passwordUser );
+            session.setAttribute("emailUser", emailUser);
+            session.setAttribute("passwordUser", passwordUser);
             response.sendRedirect("home");
 
         }
 
-     
     }
-  }
+}

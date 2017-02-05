@@ -1,12 +1,6 @@
 package SwapHome.User;
 
 
-/*----------------------------------
-class de gestion des connexions
-----------------------------------*/
-
-//importation
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -20,13 +14,20 @@ import users.db.*;
 
 
 /**
-Class de gestion des connexions à l'espace personnel pour le projet SwapHome
-@author Alexandre DUCREUX & Logan Lepage
-@4 novembre 2016
+*Class which manage connection to the app
+*@author Alexandre DUCREUX & Logan Lepage
+*@4 novembre 2016
 */
 
 public class AuthServlet extends HttpServlet
 {
+    /**
+     * calling servlet
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
@@ -35,6 +36,13 @@ public class AuthServlet extends HttpServlet
         rd.forward(request, response);
     }
     
+    /**
+     * managing connection and redirect, record session if authentication is valid 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
@@ -42,8 +50,7 @@ public class AuthServlet extends HttpServlet
         String emailUser = request.getParameter("emailUser");
         String passwordUser = request.getParameter("passwordUser");
         
-
-        // test si le formulaire est valide
+        // validate form test
         if(!UserHandler.getDb().isValid(emailUser, passwordUser))
         {
             String error = "Erreur, Identifiant / mot de passe incorrect !";
@@ -53,13 +60,10 @@ public class AuthServlet extends HttpServlet
             return;
         }
         User user = new User(emailUser, passwordUser);
-        //recupération des infos de l'utilisateur courant
+        //retrieving current user
         user = UserHandler.getDb().retrieve(emailUser);
-            
-        
-        
-        
-        // si OK, on met en session et on affiche home
+               
+        // if ok, set session & redirect
         HttpSession session = request.getSession();
         session.setAttribute( "emailUser", emailUser );
         session.setAttribute( "passwordUser", passwordUser );

@@ -1,32 +1,34 @@
 package SwapHome.User;
 
-
-//importation
 import users.db.*;
 import java.io.*;
-import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
-
-
 import javax.servlet.http.HttpSession;
 /**
-*Class which manage registring of swapHome project
+*Class which manage the main page of account of swapHome project
 *@author Alexandre DUCREUX & Logan Lepage
 *@4 novembre 2016
 */
 
 public class HomeServlet extends HttpServlet
   {
-    //temporaire pour la fausse DB
+    //stub
     //public static PersonDBStub dataBase = new PersonDBStub();
+    //real database
     public static IUserDB dataBase = new UserDBStub();
-
+    /**
+     * calling servlet
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        /* récupération de la session */
+        //retrieve information
         HttpSession session = request.getSession();
         String emailUser = (String) session.getAttribute( "emailUser" );
         String passwordUser = (String) session.getAttribute( "passwordUser" );
@@ -37,11 +39,12 @@ public class HomeServlet extends HttpServlet
             return;
         }
       
+        //welcome message
         User user = UserHandler.getDb().retrieve(emailUser);
         String message = user.getFirstNameUser()+" "+user.getNameUser();
         request.setAttribute("message", message);
 
-        //envoi des infos
+        //sending informations
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/user/home.jsp");
         rd.forward(request, response);
     }
