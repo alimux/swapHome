@@ -20,7 +20,7 @@
                                 <div class="row">
                                   <div class="input-field">
                                     <i class="material-icons prefix">account_circle</i>
-                                    <input id="emailUser" name="emailUser" type="text" class="validate" required>
+                                    <input id="emailUser" name="emailUser" type="email" class="validate" required>
                                     <label for="emailUser">Adresse email</label>
                                   </div>
                                 </div>
@@ -31,8 +31,9 @@
                                     <input id="icon_password" name="passwordUser" type="password" class="validate" required>
                                     <label for="icon_password">Mot de passe</label>
                                   </div>
-
-                                  <span class="errorMessage">${erreur}</span>
+                                </div>
+                                <div class="row center">
+                                  <span class="center red-text text-darken-4">${erreur}</span>
                                 </div>
 
                           

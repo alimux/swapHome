@@ -12,7 +12,7 @@
                       <h3 class="center blue-text text-darken-4"><i class="medium material-icons">assignment_ind</i></h3>
                       <h4 class="center blue-text text-darken-4">Inscription</h4>
                       <hr/>
-                      <span class="center red-text text-darken-4">${erreur}</span>
+                      <p class="center red-text text-darken-4">${erreur}</p>
                       <p class="center">pour vous inscrire, rien de plus simple ! <br /> Il vous suffit de remplir le formulaire d'inscription ci-dessous.</p>
 
                       <fieldset>
@@ -34,7 +34,7 @@
                     </fieldset>
 
                      <fieldset>
-                        <legend>Adresse</legend>
+                        <legend>Adresse de facturation</legend>
                       <div class="row">
 
                             <div class="input-field col s12">
@@ -48,7 +48,7 @@
                       <div class="row">
 
                             <div class="input-field col s6">
-                              <input id="zipCodeUser" name="zipCodeUser" size="10" type="text" class="validate" required>
+                              <input id="zipCodeUser" name="zipCodeUser" size="10" type="number" class="validate" required>
                               <label for="zipCodeUser">Code postal</label>
                             </div>
 
@@ -66,7 +66,7 @@
 
                               <div class="input-field col s6">
                               <i class="material-icons prefix">email</i>
-                                <input id="emailUser" name="emailUser" size="150" type="text" class="validate" required>
+                                <input id="emailUser" name="emailUser" size="150" type="email" class="validate" required>
                                 <label for="emailUser">Email *sera votre nom d'utilisateur</label>
                               </div>
 

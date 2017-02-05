@@ -19,11 +19,9 @@ import javax.servlet.RequestDispatcher;
 import users.db.*;
 
 
-//temporaire, Uniquement pour simuler base de données
-
 /**
 Class de gestion des connexions à l'espace personnel pour le projet SwapHome
-@author Alexandre DUCREUX
+@author Alexandre DUCREUX & Logan Lepage
 @4 novembre 2016
 */
 

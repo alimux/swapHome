@@ -1,4 +1,5 @@
-
+ <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+ <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,8 +19,15 @@
         <div class="nav-wrapper container">
           <a id="logo-container" href="<%= request.getContextPath() %>/index.jsp" class="brand-logo"><img src="<%= request.getContextPath() %>/images/logoSwapHome.jpg" height="60"></a>
           <ul class="right hide-on-med-and-down">
-            <li><a href="<%= request.getContextPath() %>/user/register">Inscription </a></li>
-            <li><a href="<%= request.getContextPath() %>/user/auth"> connexion</a></li>
+          <c:if test="${ !empty sessionScope.emailUser }">
+            <li><a href="<%= request.getContextPath() %>/user/home"><i class="material-icons left">account_box</i>Mon compte </a></li>
+            <li><a href="<%= request.getContextPath() %>/user/disconnect"><i class="material-icons left">input</i>Déconnexion</a>
+          </c:if>
+          <c:if test="${ empty sessionScope.emailUser }">
+            <li><a href="<%= request.getContextPath() %>/user/register"><i class="material-icons left">assignment_ind</i>Inscription </a></li>
+            <li><a href="<%= request.getContextPath() %>/user/auth"><i class="material-icons left">account_circle</i>Se Connecter</a></li>
+          </c:if>
+          
           </ul>
 
           <ul id="nav-mobile" class="side-nav">

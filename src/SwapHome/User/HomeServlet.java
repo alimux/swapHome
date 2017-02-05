@@ -1,30 +1,19 @@
 package SwapHome.User;
 
 
-/*----------------------------------
-class de gestion des inscriptions
-----------------------------------*/
-
 //importation
-import users.db.UserDBStub;
-import users.db.User;
-import users.db.IUserDB;
-import users.db.UserHandler;
-import java.io.IOException;
-import java.io.PrintWriter;
+import users.db.*;
+import java.io.*;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
+import javax.servlet.http.*;
+import javax.servlet.*;
 
-//temporaire, Uniquement pour simuler base de données
+
 import javax.servlet.http.HttpSession;
 /**
-Class de gestion des inscriptions pour le projet SwapHome
-@author Alexandre DUCREUX
-@4 novembre 2016
+*Class which manage registring of swapHome project
+*@author Alexandre DUCREUX & Logan Lepage
+*@4 novembre 2016
 */
 
 public class HomeServlet extends HttpServlet

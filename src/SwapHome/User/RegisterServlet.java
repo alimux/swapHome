@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 import org.hibernate.SessionFactory;
 
 //temporaire, Uniquement pour simuler base de données
@@ -66,9 +67,12 @@ public class RegisterServlet extends HttpServlet
       Le mot de passe est temporaire */
       if(UserHandler.getDb().exists(emailUser))
         {
-          String error = "Impossible de créer le compte utilisateur, Email déjà présent!";
+          String error = "Impossible de créer le compte utilisateur... Email déjà présent!";
           request.setAttribute("erreur", error);
           pathUrl = "/user/register.jsp";
+          //envoi des infos
+            RequestDispatcher rd = this.getServletContext().getRequestDispatcher(pathUrl);
+            rd.forward(request, response);
 
         }
         else
@@ -80,12 +84,14 @@ public class RegisterServlet extends HttpServlet
           String bienvenue = firstNameUser+" "+nameUser;
           //envoi d'attributs
           request.setAttribute("bienvenue", bienvenue);
-          pathUrl = "/user/registered.jsp";
+          // si OK, on met en session et on affiche home
+            HttpSession session = request.getSession();
+            session.setAttribute( "emailUser", emailUser );
+            session.setAttribute( "passwordUser", passwordUser );
+            response.sendRedirect("home");
 
         }
 
-        //envoi des infos
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher(pathUrl);
-        rd.forward(request, response);
+     
     }
   }

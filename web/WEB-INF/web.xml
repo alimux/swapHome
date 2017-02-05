@@ -44,5 +44,26 @@
         <servlet-name>User</servlet-name>
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
+	<servlet>
+		<servlet-name>Disconnect</servlet-name>
+		<servlet-class>SwapHome.User.DisconnectServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Disconnect</servlet-name>
+		<url-pattern>/user/disconnect</url-pattern>
+	</servlet-mapping>
+	<jsp-config>
+
+	<jsp-property-group>
+
+		<description>Config. de l'encodage des pages JSP</description>
+
+		<url-pattern>*.jsp</url-pattern>
+
+		<page-encoding>UTF-8</page-encoding>
+
+	</jsp-property-group>
+
+</jsp-config>
 
 </web-app>
