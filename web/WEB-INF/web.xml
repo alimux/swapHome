@@ -10,32 +10,68 @@
     version="3.0">
 
     <servlet>
-        <servlet-name>Register</servlet-name>
+        <servlet-name>HousingCreate</servlet-name>
+        <servlet-class>SwapHome.Housing.CreateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HousingCreate</servlet-name>
+        <url-pattern>/housing/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HousingHome</servlet-name>
+        <servlet-class>SwapHome.Housing.HomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HousingHome</servlet-name>
+        <url-pattern>/housing/home</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserRegister</servlet-name>
         <servlet-class>SwapHome.User.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Register</servlet-name>
+        <servlet-name>UserRegister</servlet-name>
         <url-pattern>/user/register</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Auth</servlet-name>
+        <servlet-name>UserAuth</servlet-name>
         <servlet-class>SwapHome.User.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Auth</servlet-name>
+        <servlet-name>UserAuth</servlet-name>
         <url-pattern>/user/auth</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
-        <servlet-name>Home</servlet-name>
-        <servlet-class>SwapHome.User.HomeServlet</servlet-class>
+        <servlet-name>UserHome</servlet-name>
+        <servlet-class>SwapHome.User.Home.HomeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Home</servlet-name>
+        <servlet-name>UserHome</servlet-name>
         <url-pattern>/user/home</url-pattern>
     </servlet-mapping>
-  
+
+    <servlet>
+        <servlet-name>UserHomeInfo</servlet-name>
+        <servlet-class>SwapHome.User.Home.InfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserHomeInfo</servlet-name>
+        <url-pattern>/user/home/info</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserHomeHousing</servlet-name>
+        <servlet-class>SwapHome.User.Home.HousingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserHomeHousing</servlet-name>
+        <url-pattern>/user/home/housing</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>User</servlet-name>
         <servlet-class>SwapHome.User.UserServlet</servlet-class>

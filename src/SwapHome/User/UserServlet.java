@@ -32,14 +32,11 @@ public class UserServlet extends HttpServlet
         HttpSession session = request.getSession();
         String emailUser = (String) session.getAttribute( "emailUser" );
         String passwordUser = (String) session.getAttribute( "passwordUser" );
-        String pathUrl;
 
         // if user is valid redirect to account else authentication
-        if(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))
-            pathUrl = "user/home";
-        else
-            pathUrl = "user/auth";       
-
-        response.sendRedirect(pathUrl);
+        response.sendRedirect(
+            emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser)
+            ? "user/home" : "user/auth"
+        );
     }
 }

@@ -1,4 +1,4 @@
-package SwapHome.User;
+package SwapHome.User.Home;
 
 import users.db.*;
 import java.io.*;
@@ -28,24 +28,15 @@ public class HomeServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        //retrieve information
+        // retrieve session information
         HttpSession session = request.getSession();
         String emailUser = (String) session.getAttribute( "emailUser" );
         String passwordUser = (String) session.getAttribute( "passwordUser" );
 
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("auth.jsp");
-            return;
-        }
-      
-        //welcome message
-        User user = UserHandler.getDb().retrieve(emailUser);
-        String message = user.getFirstNameUser()+" "+user.getNameUser();
-        request.setAttribute("message", message);
-
-        //sending informations
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/user/home.jsp");
-        rd.forward(request, response);
+        // if user is valid redirect to account info else authentication
+        response.sendRedirect(
+            emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser)
+            ? "home/info" : "../user/auth"
+        );
     }
 }

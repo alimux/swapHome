@@ -1,4 +1,4 @@
- <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
  <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -10,8 +10,8 @@
         <!-- CSS  -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="<%= request.getContextPath() %>/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="<%= request.getContextPath() %>/css/default.style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <link href="<%= request.getContextPath() %>/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-
     </head>
     <body>
 
@@ -27,7 +27,7 @@
             <li><a href="<%= request.getContextPath() %>/user/register"><i class="material-icons left">assignment_ind</i>Inscription </a></li>
             <li><a href="<%= request.getContextPath() %>/user/auth"><i class="material-icons left">account_circle</i>Se Connecter</a></li>
           </c:if>
-          
+
           </ul>
 
           <ul id="nav-mobile" class="side-nav">

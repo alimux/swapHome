@@ -5,10 +5,10 @@
     <div class="container">
       <div class="row">
           <div class="col s12">
-          
+
                 <div class="card-panel grey lighten-4">
                   <div class="row">
-                    
+
                       <h3 class="center blue-text text-darken-4"><i class="medium material-icons">assignment_ind</i></h3>
                       <h4 class="center blue-text text-darken-4">Inscription</h4>
                       <hr/>
@@ -18,7 +18,7 @@
                       <fieldset>
                         <legend>Identité</legend>
                         <div class="row">
-               
+
                             <div class="input-field col s6">
                               <i class="material-icons prefix">account_circle</i>
                               <input id="nameUser" name="nameUser" type="text" size="50" class="validate" required>
@@ -39,7 +39,7 @@
 
                             <div class="input-field col s12">
                               <i class="material-icons prefix">home</i>
-                              <textarea id="Adresse" class="materialize-textarea" rows="5" required></textarea>
+                              <textarea id="Adresse" name="adressUser" class="materialize-textarea" rows="5" required></textarea>
                               <label for="Adresse">Adresse</label>
                             </div>
 
@@ -56,7 +56,7 @@
                               <input id="cityUser" name="cityUser" size="200" type="text" class="validate" required>
                               <label for="cityUser">Ville</label>
                             </div>
-               
+
                       </div>
                     </fieldset>
 
@@ -75,9 +75,9 @@
                                 <input id="passwdUSer" type="password" name="passwdUser" required>
                                 <label for="passwdUser">Mot de passe : </label>
                               </div>
-               
-                      </div> 
-                    </fieldset> 
+
+                      </div>
+                    </fieldset>
                       <hr/>
                       <div class="row center">
                       <br/>
@@ -86,7 +86,7 @@
 
 
 
-                  </div>     
+                  </div>
                 </div>
 
          </div>

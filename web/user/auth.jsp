@@ -14,9 +14,9 @@
 
                     <div class="card-stacked grey lighten-4">
                         <div class="card-content">
-                            <h4 class="center blue-text text-darken-4"><i class="material-icons">https</i>connexion</h4> 
+                            <h4 class="center blue-text text-darken-4"><i class="material-icons">https</i>connexion</h4>
 
-                            
+
                                 <div class="row">
                                   <div class="input-field">
                                     <i class="material-icons prefix">account_circle</i>
@@ -24,7 +24,7 @@
                                     <label for="emailUser">Adresse email</label>
                                   </div>
                                 </div>
-                              
+
                                 <div class="row">
                                   <div class="input-field">
                                     <i class="material-icons prefix">lock_outline</i>
@@ -36,17 +36,15 @@
                                   <span class="center red-text text-darken-4">${erreur}</span>
                                 </div>
 
-                          
-
                         </div>
-                    
-                
+
+
                       <div class="card-action grey lighten-4">
                           <button class="waves-effect waves-light btn blue darken-4 right " type="submit" name="action"><i class="material-icons left">lock_open</i> Connexion</button>
                       </div>
 
                   </div>
-         
+
              </div>
 
         </div>
