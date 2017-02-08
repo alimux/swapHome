@@ -40,6 +40,10 @@ public class InfoServlet extends HttpServlet
         }
 
         //sending informations
+        //retrieving current user
+        User user = UserHandler.getDb().retrieve(emailUser);
+        String message = user.getFirstNameUser()+" "+user.getNameUser();
+        request.setAttribute("message", message);
         this.getServletContext().getRequestDispatcher("/user/home/info.jsp").forward(request, response);
     }
 }

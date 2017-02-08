@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@page import="utils.Utils, housing.* "%>
+
 <jsp:include page="/partials/header.jsp" />
 <br><br>
  <form method="post" action="edit">
@@ -63,23 +65,44 @@
                 </fieldset>
 
                 <fieldset>
-                   <legend>Préférences</legend>
+                   <legend>Préférences </legend>
                    <div class="row">
                        <div class="input-field col s4">
-                         <input id="monthPrefered" name="monthPrefered" size="2"
-                           min="1" max="12" type="number" class="validate"
-                           value="${housing.monthPrefered}" required>
-                         <label for="monthPrefered">Mois préféré</label>
+                        
+
+                              <% 
+                                  //request.getAttribute("housing") ;
+                                  //out.println(month2);
+                                   %>
+                                   <span>toto <%=request.getAttribute("housing") %></span>
+
+
+                              <option value="${housing.monthPrefered}"><% out.println(Utils.getMonthList().get(7).getMonth()); %></option>
+                                <% for(int i=0;i<Utils.getMonthList().size();i++){ %>
+                                  <option value="<%= i+1 %>"><% out.println(Utils.getMonthList().get(i).getMonth()); %></option>
+                                <% } %>
+                              </select>
+                            
+                         <label for="monthPrefered">Mois préféré </label>
                        </div>
                        <div class="input-field col s4">
-                         <input id="countryP1" name="countryP1" size="200" type="text" class="validate"
-                           value="${housing.countryP2}" required>
-                         <label for="countryP1">Pays 1</label>
+                          <select name="countryP1" class="validate" required>
+                            <option value="">Sélectionnez le pays de votre logement</option>
+                            <% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
+                                  <option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
+                                <% } %>
+                            </select>
+                         <label for="countryP1">Pays du Logement</label>
                        </div>
                        <div class="input-field col s4">
-                         <input id="countryP2" name="countryP2" size="200" type="text" class="validate"
-                           value="${housing.countryP2}" required>
-                         <label for="countryP2">Pays 2</label>
+                        
+                         <select name="countryP2" class="validate" required>
+                            <option value="">Sélectionnez le pays de votre logement</option>
+                            <% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
+                                  <option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
+                                <% } %>
+                            </select>
+                         <label for="countryP2">Pays de destination</label>
                        </div>
                    </div>
                </fieldset>

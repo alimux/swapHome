@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpSession;
 import users.db.User;
 import users.db.UserHandler;
+import utils.*;
 
 /**
  * Classe permettant de créer des logements
@@ -36,6 +37,8 @@ public class CreateServlet extends HttpServlet
             response.sendRedirect("../user/auth");
             return;
         }
+        
+      
 
         //sending informations
         this.getServletContext().getRequestDispatcher(
@@ -59,6 +62,8 @@ public class CreateServlet extends HttpServlet
             response.sendRedirect("../user/auth");
             return;
         }
+          //retrieve month enum and push into form
+          
 
         User user = UserHandler.getDb().retrieve(emailUser);
         String address = request.getParameter("address");
@@ -70,6 +75,14 @@ public class CreateServlet extends HttpServlet
         int surface = Integer.parseInt(request.getParameter("surface"));
         int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
         int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
+        System.out.println("Parsing month"+monthPrefered);
+        Utils u = new Utils();
+        if(!u.isValid(monthPrefered)){
+            String error = "Merci de sélectionner un mois valide !";
+            request.setAttribute("erreur", error);
+            this.getServletContext().getRequestDispatcher("/user/housing/createHouse.jsp").forward(request, response);
+            
+        }
 
         // recording in DB with hibernate
         Housing housing;

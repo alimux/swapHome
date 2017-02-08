@@ -45,6 +45,7 @@ public class EditServlet extends HttpServlet
         Housing housing = HousingHandler.getDb().retrieve(
             Integer.parseInt(request.getParameter("id"))
         );
+        
         if(housing == null) {
             response.sendRedirect("../user/home/housing");
             return;
