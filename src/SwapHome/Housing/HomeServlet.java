@@ -1,5 +1,6 @@
 package SwapHome.Housing;
 
+import housing.db.HousingHandler;
 import users.db.*;
 import java.io.*;
 import javax.servlet.http.*;
@@ -12,21 +13,22 @@ import javax.servlet.http.HttpSession;
  */
 public class HomeServlet extends HttpServlet
   {
-    
+
     /**
      * calling servlet
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        // Ajoute en attribut la liste des logements
+        request.setAttribute("housings", HousingHandler.getDb().list());
 
         //sending informations
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/housing/home.jsp");
-        rd.forward(request, response);
+        this.getServletContext().getRequestDispatcher("/housing/home.jsp").forward(request, response);
     }
 }

@@ -9,3 +9,8 @@
 nav .brand-logo {
   color: #fff;
 }
+
+.input-card {
+  margin:0;
+  box-shadow: none;
+}

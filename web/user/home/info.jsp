@@ -16,7 +16,7 @@
 			    </div>
 
 			    <div class="row">
-			    <p>Bienvenue ${message} dans votre espace personnel... bla bla... </p>
+			    	<p>Bienvenue ${message} dans votre espace personnel... bla bla... </p>
 			    </div>
 				</div>
     	</div>

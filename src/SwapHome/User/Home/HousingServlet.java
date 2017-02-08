@@ -42,7 +42,8 @@ public class HousingServlet extends HttpServlet
         }
        
         // Ajoute en attribut la liste des logements d'un utilisateur
-        request.setAttribute("housings", HousingHandler.getDb().listByCustomer(emailUser));
+        User user = UserHandler.getDb().retrieve(emailUser);
+        request.setAttribute("housings", HousingHandler.getDb().listByUser(user));
 
         //sending informations
         this.getServletContext().getRequestDispatcher("/user/home/housing.jsp").forward(request, response);

@@ -12,7 +12,7 @@ import users.db.UserHandler;
  * Classe permettant de créer des logements
  * @author Logan Lepage & Alexandre DUCREUX
  */
-public class CreateServlet extends HttpServlet
+public class EditServlet extends HttpServlet
   {
 
     /**
@@ -37,11 +37,25 @@ public class CreateServlet extends HttpServlet
             return;
         }
 
+        // Si le logement n'existe pas, return
+        if(!(request.getParameter("id") != null)) {
+            response.sendRedirect("../user/home/housing");
+            return;
+        }
+        Housing housing = HousingHandler.getDb().retrieve(
+            Integer.parseInt(request.getParameter("id"))
+        );
+        if(housing == null) {
+            response.sendRedirect("../user/home/housing");
+            return;
+        }
+
         //sending informations
+        request.setAttribute("housing", housing);
         this.getServletContext().getRequestDispatcher(
-          request.getParameter("type") != null && request.getParameter("type").equals("house")
-          ? "/housing/createHouse.jsp"
-          : "/housing/createApartment.jsp"
+                housing.getClass() == Apartment.class
+                ? "/housing/editApartment.jsp"
+                : "/housing/editHouse.jsp"
         ).forward(request, response);
     }
 
@@ -61,6 +75,7 @@ public class CreateServlet extends HttpServlet
         }
 
         User user = UserHandler.getDb().retrieve(emailUser);
+        int id = Integer.parseInt(request.getParameter("id"));
         String address = request.getParameter("address");
         String zipCode = request.getParameter("zipCode");
         String city = request.getParameter("city");
@@ -74,7 +89,7 @@ public class CreateServlet extends HttpServlet
         // recording in DB with hibernate
         Housing housing;
         if(request.getParameter("type").equals("house")) {
-          int gardenSurface = Integer.parseInt(request.getParameter("gardenSurface"));
+            int gardenSurface = Integer.parseInt(request.getParameter("gardenSurface"));
             housing = new House(user, address, zipCode, city, countryP1,
                 countryP2, description, surface, roomNumber, monthPrefered, gardenSurface );
         } else {
@@ -82,8 +97,12 @@ public class CreateServlet extends HttpServlet
                 countryP2, description, surface, roomNumber, monthPrefered );
         }
 
+        this.log("room number " + roomNumber);
         this.log("Enregistrement de " + housing);
-        HousingHandler.getDb().create(housing);
+        housing.setId(id);
+        
+        this.log("room number " + housing.getRoomNumber());
+        HousingHandler.getDb().update(housing);
 
         //setting session
         response.sendRedirect("../user/home/housing");

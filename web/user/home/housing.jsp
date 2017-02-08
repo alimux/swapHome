@@ -8,23 +8,28 @@
    		<div class="col s3">
    			<jsp:include page="../partials/menu.jsp" />
 				<a class="waves-effect waves-light btn blue darken-4"
-				 	href="../../housing/create"><i class="material-icons left">add</i> Logement</a>
+				 	href="../../housing/create?type=house"><i class="material-icons left">add</i> Maison</a>
+				<a class="waves-effect waves-light btn blue darken-4"
+				 	href="../../housing/create?type=apartment"><i class="material-icons left">add</i> Appartement</a>
    		</div>
 
 			<div class="col s9">
 
 	   	 <!-- main part -->
 			 <c:forEach items="${housings}" var="item">
-						<div class="col s6">
-							<div class="card-panel grey lighten-4">
-								<div class="row">
-									<h5 class="center blue-text text-darken-4">Logement</h5>
-								</div>
-								<div class="row">
-									<p><c:out value="${item.description}">Description par défaut</c:out></p>
-								</div>
-							</div>
+					<div class="col s6">
+						<div class="card grey lighten-4">
+							<div class="card-content blue-grey-text darken-1">
+	              <span class="card-title">Logement</span>
+	              <p><c:out value="${item.description}">Description par défaut</c:out></p>
+	            </div>
+							<div class="card-action">
+	              <a href="../../housing/edit?id=${item.id}">Modifier</a>
+	              <a href="../../housing/delete?id=${item.id}"
+									onclick="return confirm('Voulez-vous supprimer ce logement ?');">Supprimer</a>
+	            </div>
 						</div>
+					</div>
 				</c:forEach>
 
 			</div>

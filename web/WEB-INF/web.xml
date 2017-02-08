@@ -10,6 +10,24 @@
     version="3.0">
 
     <servlet>
+        <servlet-name>HousingEdit</servlet-name>
+        <servlet-class>SwapHome.Housing.EditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HousingEdit</servlet-name>
+        <url-pattern>/housing/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HousingDelete</servlet-name>
+        <servlet-class>SwapHome.Housing.DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HousingDelete</servlet-name>
+        <url-pattern>/housing/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>HousingCreate</servlet-name>
         <servlet-class>SwapHome.Housing.CreateServlet</servlet-class>
     </servlet>

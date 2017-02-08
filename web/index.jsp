@@ -25,14 +25,20 @@
 </div>
 
 <div class="container">
+  <div class="section center">
+    <a class="waves-effect waves-light btn blue darken-4" href="housing/home">Voir les logements</a>
+  </div>
+</div>
+
+<div class="container">
   <div class="section">
 
    <div class="col s12 m4 center">
 	   	 <div class="row">
-	     
+
 	        <img src="<%= request.getContextPath() %>//images/winIcon.png">
 	        <h5>Nombre reccord d'échange depuis la création de notre site : </h5>
-	        
+
 	     </div>
 
 	       <div class="row">

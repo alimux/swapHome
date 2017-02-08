@@ -2,3 +2,4 @@ dist/
 build/
 ressources/
 build.xml
+update.sh
