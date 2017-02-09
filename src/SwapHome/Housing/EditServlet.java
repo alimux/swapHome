@@ -2,11 +2,13 @@ package SwapHome.Housing;
 
 import housing.db.*;
 import java.io.*;
+import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
 import users.db.User;
 import users.db.UserHandler;
+import utils.Utils;
 
 /**
  * Classe permettant de créer des logements
@@ -52,6 +54,10 @@ public class EditServlet extends HttpServlet
         }
 
         //sending informations
+        List countries =  Utils.getCountriesList();
+        List months = Utils.getMonthList();
+        request.setAttribute("months", months);
+        request.setAttribute("countries", countries);
         request.setAttribute("housing", housing);
         this.getServletContext().getRequestDispatcher(
                 housing.getClass() == Apartment.class

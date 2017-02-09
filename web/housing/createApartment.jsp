@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/partials/header.jsp" />
 <br><br>
  <form method="post" action="create">
@@ -13,7 +14,7 @@
                   <p class="center red-text text-darken-4">${erreur}</p>
                   <p class="center">Ajouter un appartement en remplissant le formulaire si dessous</p>
                   <fieldset>
-                     <legend>Adresse</legend>
+                     <legend>Adresse du logement</legend>
                      <div class="row">
                          <div class="input-field col s12">
                            <i class="material-icons prefix">home</i>
@@ -32,7 +33,7 @@
                  </fieldset>
 
                  <fieldset>
-                    <legend>Informations</legend>
+                    <legend>Informations relative au bien</legend>
                     <div class="row">
                       <div class="input-field col s12">
                         <i class="material-icons prefix">info outline</i>
@@ -41,7 +42,7 @@
                       </div>
                       <div class="input-field col s6">
                         <input id="surface" name="surface" size="10" min="0" type="number" class="validate" required>
-                        <label for="surface">Surface</label>
+                        <label for="surface">Surface en m2</label>
                       </div>
                       <div class="input-field col s6">
                         <input id="roomNumber" name="roomNumber" size="4" min="0" type="number" class="validate" required>
@@ -54,16 +55,34 @@
                    <legend>Préférences</legend>
                    <div class="row">
                        <div class="input-field col s4">
-                         <input id="monthPrefered" name="monthPrefered" size="2"
-                           min="1" max="12" type="number" class="validate" required>
+
+                         <select name="monthPrefered" class="validate" required>
+                              <option value="">Sélectionnez un mois</option>
+                                <c:set var="count" value="0" scope="page"/>
+                                <c:forEach var="item" items="${months}">    
+                                  <c:set var="count" value="${count+1}" scope="page"/>             
+                                  <option value="${count}">${item.month}</option>
+                                </c:forEach>
+                              </select>
+
                          <label for="monthPrefered">Mois préféré</label>
                        </div>
                        <div class="input-field col s4">
-                         <input id="countryP1" name="countryP1" size="200" type="text" class="validate" required>
+                         <select name="countryP1" class="validate" required>
+                            <option value="">Sélectionnez le pays de votre logement</option>                                                            
+                                <c:forEach var="item" items="${countries}" varStatus="i">               
+                                  <option value="${item.name}">${item.country}</option>
+                                </c:forEach>
+                            </select>
                          <label for="countryP1">Pays 1</label>
                        </div>
                        <div class="input-field col s4">
-                         <input id="countryP2" name="countryP2" size="200" type="text" class="validate" required>
+                         <select name="countryP2" class="validate" required>
+                            <option value="">Sélectionnez le pays de destination</option>
+                                <c:forEach var="item" items="${countries}">                
+                                  <option value="${item.name}">${item.country}</option>
+                                </c:forEach>
+                            </select>
                          <label for="countryP2">Pays 2</label>
                        </div>
                    </div>

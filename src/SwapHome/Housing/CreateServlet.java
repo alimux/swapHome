@@ -2,6 +2,7 @@ package SwapHome.Housing;
 
 import housing.db.*;
 import java.io.*;
+import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,11 @@ public class CreateServlet extends HttpServlet
       
 
         //sending informations
+        
+        List countries =  Utils.getCountriesList();
+        List months = Utils.getMonthList();
+        request.setAttribute("months", months);
+        request.setAttribute("countries", countries);
         this.getServletContext().getRequestDispatcher(
           request.getParameter("type") != null && request.getParameter("type").equals("house")
           ? "/housing/createHouse.jsp"

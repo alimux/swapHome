@@ -16,7 +16,8 @@
 			    </div>
 
 			    <div class="row">
-			    	<p>Bienvenue ${message} dans votre espace personnel... bla bla... </p>
+			    	<p>Bienvenue ${message} dans votre espace personnel... </p>
+            <p>Vous pouvez ajouter, modifier ou supprimer des logements à l'aide du menu sur votre gauche.</p>
 			    </div>
 				</div>
     	</div>

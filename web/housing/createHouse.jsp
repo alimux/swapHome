@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@page import="utils.Utils "%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/partials/header.jsp" />
 <br><br>
  <form method="post" action="create">
@@ -60,32 +60,34 @@
                    <legend>Préférences concernant l'échange</legend>
                    <div class="row">
                        <div class="input-field col s4">
-                         
+                         		
                             	<select name="monthPrefered" class="validate" required>
                             	<option value="">Sélectionnez un mois</option>
-                            		<% for(int i=0;i<Utils.getMonthList().size();i++){ %>
-                            			<option value="<%= i+1 %>"><% out.println(Utils.getMonthList().get(i).getMonth()); %></option>
-                            		<% } %>
+                            		<c:set var="count" value="0" scope="page"/>
+                            		<c:forEach var="item" items="${months}">    
+                            			<c:set var="count" value="${count+1}" scope="page"/>             
+                            			<option value="${count}">${item.month}</option>
+                            		</c:forEach>
                             	</select>
                             
                          <label for="monthPrefered">Mois préféré </label>
                        </div>
                        <div class="input-field col s4">
                        		<select name="countryP1" class="validate" required>
-                         		<option value="">Sélectionnez le pays de votre logement</option>
-                         		<% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
-                            			<option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
-                            		<% } %>
+                         		<option value="">Sélectionnez le pays de votre logement</option>                         		                            		
+                            		<c:forEach var="item" items="${countries}" varStatus="i">               
+                            			<option value="${item.name}">${item.country}</option>
+                            		</c:forEach>
                             </select>
                          <label for="countryP1">Pays du Logement</label>
                        </div>
                        <div class="input-field col s4">
                         
                          <select name="countryP2" class="validate" required>
-                         		<option value="">Sélectionnez le pays de votre logement</option>
-                         		<% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
-                            			<option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
-                            		<% } %>
+                         		<option value="">Sélectionnez le pays de destination</option>
+                            		<c:forEach var="item" items="${countries}">                
+                            			<option value="${item.name}">${item.country}</option>
+                            		</c:forEach>
                             </select>
                          <label for="countryP2">Pays de destination</label>
                        </div>

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@page import="utils.Utils, housing.* "%>
-
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/partials/header.jsp" />
 <br><br>
  <form method="post" action="edit">
@@ -68,39 +68,51 @@
                    <legend>Préférences </legend>
                    <div class="row">
                        <div class="input-field col s4">
-                        
 
-                              <% 
-                                  //request.getAttribute("housing") ;
-                                  //out.println(month2);
-                                   %>
-                                   <span>toto <%=request.getAttribute("housing") %></span>
-
-
-                              <option value="${housing.monthPrefered}"><% out.println(Utils.getMonthList().get(7).getMonth()); %></option>
-                                <% for(int i=0;i<Utils.getMonthList().size();i++){ %>
-                                  <option value="<%= i+1 %>"><% out.println(Utils.getMonthList().get(i).getMonth()); %></option>
-                                <% } %>
+                              <c:set var="monthIndex" value="${housing.monthPrefered}"/>
+                              <fmt:parseNumber var="idx" type="number" value="${monthIndex-1}" />
+                             <select name="monthPrefered" class="validate" required>
+                              <option value="${housing.monthPrefered}">${months[idx]}</option>
+                                <c:set var="count" value="0" scope="page"/>
+                                <c:forEach var="item" items="${months}">    
+                                  <c:set var="count" value="${count+1}" scope="page"/>             
+                                  <option value="${count}">${item.month}</option>
+                                </c:forEach>
                               </select>
                             
                          <label for="monthPrefered">Mois préféré </label>
                        </div>
                        <div class="input-field col s4">
                           <select name="countryP1" class="validate" required>
-                            <option value="">Sélectionnez le pays de votre logement</option>
-                            <% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
-                                  <option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
-                                <% } %>
+                             
+                              <c:set var="selectedCountryP1" value="${housing.countryP1}"/>
+                              <c:forEach  var="selected" items="${countries}" varStatus="i">
+                                  <c:if test="${selectedCountryP1== selected.name}">
+                                    <c:set var="countryP1" value="${selected.country}"/>
+                                  </c:if>
+                              </c:forEach>
+
+                            <option value="${housing.countryP1}">${countryP1}</option>                           
+                                <c:forEach var="item" items="${countries}" varStatus="i">               
+                                  <option value="${item.name}">${item.country}</option>
+                                </c:forEach>
                             </select>
                          <label for="countryP1">Pays du Logement</label>
                        </div>
                        <div class="input-field col s4">
                         
                          <select name="countryP2" class="validate" required>
-                            <option value="">Sélectionnez le pays de votre logement</option>
-                            <% for(int i=0;i<Utils.getCountriesList().size();i++){ %>
-                                  <option value="<% out.println(Utils.getCountriesList().get(i)) ;%>"><% out.println(Utils.getCountriesList().get(i).getCountry()); %></option>
-                                <% } %>
+                            <c:set var="selectedCountryP2" value="${housing.countryP2}"/>
+                              <c:forEach  var="selected" items="${countries}" varStatus="i">
+                                  <c:if test="${selectedCountryP2== selected.name}">
+                                    <c:set var="countryP2" value="${selected.country}"/>
+                                  </c:if>
+                              </c:forEach>
+
+                            <option value="${housing.countryP2}">${countryP2}</option>
+                                <c:forEach var="item" items="${countries}">                
+                                  <option value="${item.name}">${item.country}</option>
+                                </c:forEach>
                             </select>
                          <label for="countryP2">Pays de destination</label>
                        </div>
