@@ -2,18 +2,25 @@ package SwapHome.Housing;
 
 import housing.db.*;
 import java.io.*;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.servlet.http.*;
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import users.db.User;
 import users.db.UserHandler;
 import utils.*;
 
+
 /**
- * Classe permettant de créer des logements
+ * Servlet which is using to create housing
  * @author Logan Lepage & Alexandre DUCREUX
  */
+@MultipartConfig(fileSizeThreshold=1024*1024*10,    // 10 MB 
+                 maxFileSize=1024*1024*50,          // 50 MB
+                 maxRequestSize=1024*1024*100,      // 100 MB
+                 location="/")
 public class CreateServlet extends HttpServlet
   {
 
@@ -24,6 +31,8 @@ public class CreateServlet extends HttpServlet
      * @throws ServletException
      * @throws IOException
      */
+    public static final int BUFFER = 10240;
+    public static final String SAVE_PATH = "housingImages";
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
@@ -38,8 +47,6 @@ public class CreateServlet extends HttpServlet
             response.sendRedirect("../user/auth");
             return;
         }
-        
-      
 
         //sending informations
         
@@ -68,9 +75,54 @@ public class CreateServlet extends HttpServlet
             response.sendRedirect("../user/auth");
             return;
         }
-          //retrieve month enum and push into form
-          
-
+        //Images files form setting
+        // gets absolute path of the web application
+        //File uploads = new File(SAVE_PATH);
+        // constructs path of the directory to save uploaded file
+        //String savePath = appPath + File.separator + SAVE_PATH;
+        
+        // creates the save directory if it does not exists
+        String applicationPath = request.getServletContext().getRealPath("");
+        String uploadFilePath = applicationPath + File.separator + SAVE_PATH + File.separator ;
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+        System.out.println("upload directory : "+fileSaveDir.getAbsolutePath());
+        //list of the differents images
+        List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName())).collect(Collectors.toList());
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        for (Part part : fileParts) {
+            String fileName = extractFileName(part);
+            // refines the fileName in case it is an absolute path
+            fileName = new File(fileName).getName();
+            log("Nom du fichier extrait : "+fileName+" repertoire : "+fileSaveDir);
+            System.out.println("Nom du fichier extrait : "+fileName +" repertoire : "+fileSaveDir+File.separator+fileName);
+            //part.write(uploadFilePath+ File.separator + fileName);
+            try{
+            inputStream = part.getInputStream();
+            outputStream = new FileOutputStream(fileSaveDir+File.separator+fileName);
+            int read = 0;
+            final byte[] bytes = new byte[BUFFER];
+            while((read = inputStream.read(bytes))!=-1){
+                outputStream.write(bytes,0, read);
+            }
+            }catch(Exception e){
+                e.toString();
+                fileName="";
+            }finally{
+                if(outputStream!=null){
+                    outputStream.close();
+                }
+                if(inputStream!=null){
+                    inputStream.close();
+                }
+            }
+        }
+        request.setAttribute("upload", "upload ok!");
+        
+        
         User user = UserHandler.getDb().retrieve(emailUser);
         String address = request.getParameter("address");
         String zipCode = request.getParameter("zipCode");
@@ -79,6 +131,8 @@ public class CreateServlet extends HttpServlet
         String countryP2 = request.getParameter("countryP2");
         String description = request.getParameter("description");
         int surface = Integer.parseInt(request.getParameter("surface"));
+        log("Erreur parsing : "+surface);
+        System.out.println("Erreur parsing "+surface);
         int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
         int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
         System.out.println("Parsing month"+monthPrefered);
@@ -107,5 +161,20 @@ public class CreateServlet extends HttpServlet
         //setting session
         response.sendRedirect("../user/home/housing");
     }
+    
+   /**
+     * Method which extracts file name from HTTP header content-disposition
+     */
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length()-1);
+            }
+        }
+        return null;
+    }
+  
 
 }

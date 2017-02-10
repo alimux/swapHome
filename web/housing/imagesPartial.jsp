@@ -1,4 +1,5 @@
 <div class="row" id="images">
+<c:if test="${ !empty fichier }"><p><c:out value="Le fichier ${ fichier } (${ description }) a été uploadé !" /></p></c:if>
   <!-- Modal Trigger -->
   <a href="#addImage">Ajouter une image</a>
 
@@ -13,7 +14,7 @@
           <span class="card-title">Chercher une image</span>
           <div class="file-field input-field">
             <div class="btn"><span>Image</span>
-              <input id="file-input" type="file" onchange="onImageChange(this)" />
+              <input id="file-input" name="file" type="file" onchange="onImageChange(this)" multiple="true" required/>
             </div>
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" />

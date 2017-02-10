@@ -3,7 +3,7 @@
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/partials/header.jsp" />
 <br><br>
- <form method="post" action="edit">
+ <form method="post" action="edit" enctype="multipart/form-data">
     <div class="container">
       <div class="row">
           <div class="col s12">

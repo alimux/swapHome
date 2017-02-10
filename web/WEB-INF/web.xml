@@ -12,13 +12,6 @@
     <servlet>
         <servlet-name>HousingEdit</servlet-name>
         <servlet-class>SwapHome.Housing.EditServlet</servlet-class>
-		<servlet-class>SwapHome.Housing.CreateServlet</servlet-class>
-		    <multipart-config>
-            <location>/tmp/tmpFiles/</location> 
-            <max-file-size>10485760</max-file-size> <!-- 10 Mo -->
-            <max-request-size>52428800</max-request-size> <!-- 5 x 10 Mo -->
-            <file-size-threshold>1048576</file-size-threshold> <!-- 1 Mo -->
-        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>HousingEdit</servlet-name>
@@ -37,12 +30,6 @@
     <servlet>
         <servlet-name>HousingCreate</servlet-name>
         <servlet-class>SwapHome.Housing.CreateServlet</servlet-class>
-		    <multipart-config>
-            <location>/tmp/tmpFiles/</location> 
-            <max-file-size>10485760</max-file-size> <!-- 10 Mo -->
-            <max-request-size>52428800</max-request-size> <!-- 5 x 10 Mo -->
-            <file-size-threshold>1048576</file-size-threshold> <!-- 1 Mo -->
-        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>HousingCreate</servlet-name>
