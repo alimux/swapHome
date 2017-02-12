@@ -8,7 +8,7 @@ import housingExchange.db.*;
 /**
  * @author Logan LEPAGE et Alexandre DUCREUX
  */
-public class Test {
+public class Fixtures {
 
     private final static String PASSWORD = "123456";
 
