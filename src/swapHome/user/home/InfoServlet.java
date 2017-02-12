@@ -1,4 +1,4 @@
-package SwapHome.User.Home;
+package swapHome.user.home;
 
 import users.db.*;
 import java.io.*;
@@ -22,7 +22,7 @@ public class InfoServlet extends HttpServlet
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)

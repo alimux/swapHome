@@ -1,9 +1,7 @@
-package SwapHome.User.Home;
+package swapHome.user.home;
 
-import housing.db.*;
 import users.db.*;
 import java.io.*;
-import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
@@ -13,7 +11,7 @@ import javax.servlet.http.HttpSession;
 *@4 novembre 2016
 */
 
-public class HousingServlet extends HttpServlet
+public class HomeServlet extends HttpServlet
   {
     //stub
     //public static PersonDBStub dataBase = new PersonDBStub();
@@ -24,7 +22,7 @@ public class HousingServlet extends HttpServlet
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,17 +33,10 @@ public class HousingServlet extends HttpServlet
         String emailUser = (String) session.getAttribute( "emailUser" );
         String passwordUser = (String) session.getAttribute( "passwordUser" );
 
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("../../user/auth");
-            return;
-        }
-       
-        // Ajoute en attribut la liste des logements d'un utilisateur
-        User user = UserHandler.getDb().retrieve(emailUser);
-        request.setAttribute("housings", HousingHandler.getDb().listByUser(user));
-
-        //sending informations
-        this.getServletContext().getRequestDispatcher("/user/home/housing.jsp").forward(request, response);
+        // if user is valid redirect to account info else authentication
+        response.sendRedirect(
+            emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser)
+            ? "home/info" : "../user/auth"
+        );
     }
 }

@@ -1,4 +1,4 @@
-package SwapHome.User;
+package swapHome.user;
 
 
 import java.io.IOException;

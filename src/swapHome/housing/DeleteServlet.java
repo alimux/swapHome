@@ -1,4 +1,4 @@
-package SwapHome.Housing;
+package swapHome.housing;
 
 import housing.db.*;
 import java.io.*;

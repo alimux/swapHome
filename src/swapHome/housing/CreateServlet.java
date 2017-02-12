@@ -1,4 +1,4 @@
-package SwapHome.Housing;
+package swapHome.housing;
 
 import housing.db.*;
 import java.io.*;
@@ -131,17 +131,19 @@ public class CreateServlet extends HttpServlet
         String countryP2 = request.getParameter("countryP2");
         String description = request.getParameter("description");
         int surface = Integer.parseInt(request.getParameter("surface"));
+        
         log("Erreur parsing : "+surface);
         System.out.println("Erreur parsing "+surface);
+        
         int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
         int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
+        
         System.out.println("Parsing month"+monthPrefered);
+        
         Utils u = new Utils();
         if(!u.isValid(monthPrefered)){
-            String error = "Merci de sélectionner un mois valide !";
-            request.setAttribute("erreur", error);
+            request.setAttribute("erreur", "Merci de sélectionner un mois valide !");
             this.getServletContext().getRequestDispatcher("/user/housing/createHouse.jsp").forward(request, response);
-            
         }
 
         // recording in DB with hibernate
@@ -157,14 +159,12 @@ public class CreateServlet extends HttpServlet
 
         this.log("Enregistrement de " + housing);
         HousingHandler.getDb().create(housing);
-
-        //setting session
         response.sendRedirect("../user/home/housing");
     }
     
    /**
-     * Method which extracts file name from HTTP header content-disposition
-     */
+    * Method which extracts file name from HTTP header content-disposition
+    */
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
@@ -175,6 +175,4 @@ public class CreateServlet extends HttpServlet
         }
         return null;
     }
-  
-
 }

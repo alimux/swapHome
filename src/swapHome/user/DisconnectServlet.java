@@ -1,5 +1,4 @@
-
-package SwapHome.User;
+package swapHome.user;
 
 import java.io.*;
 import javax.servlet.*;
@@ -12,21 +11,21 @@ import javax.servlet.http.HttpSession;
  */
 
 public class DisconnectServlet extends HttpServlet{
-    
+
     private static final String DISCONNECT = "/index.jsp";
     /**
      * calling servlet, destroy session
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.invalidate();
-        
+
         this.getServletContext().getRequestDispatcher(DISCONNECT).forward(request, response);
     }
-    
-    
+
+
 }

@@ -11,7 +11,7 @@
 
     <servlet>
         <servlet-name>HousingEdit</servlet-name>
-        <servlet-class>SwapHome.Housing.EditServlet</servlet-class>
+        <servlet-class>swapHome.housing.EditServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HousingEdit</servlet-name>
@@ -20,7 +20,7 @@
 
     <servlet>
         <servlet-name>HousingDelete</servlet-name>
-        <servlet-class>SwapHome.Housing.DeleteServlet</servlet-class>
+        <servlet-class>swapHome.housing.DeleteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HousingDelete</servlet-name>
@@ -29,7 +29,7 @@
 
     <servlet>
         <servlet-name>HousingCreate</servlet-name>
-        <servlet-class>SwapHome.Housing.CreateServlet</servlet-class>
+        <servlet-class>swapHome.housing.CreateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HousingCreate</servlet-name>
@@ -37,17 +37,8 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>HousingHome</servlet-name>
-        <servlet-class>SwapHome.Housing.HomeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HousingHome</servlet-name>
-        <url-pattern>/housing/home</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>UserRegister</servlet-name>
-        <servlet-class>SwapHome.User.RegisterServlet</servlet-class>
+        <servlet-class>swapHome.user.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserRegister</servlet-name>
@@ -56,7 +47,7 @@
 
     <servlet>
         <servlet-name>UserAuth</servlet-name>
-        <servlet-class>SwapHome.User.AuthServlet</servlet-class>
+        <servlet-class>swapHome.user.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserAuth</servlet-name>
@@ -65,7 +56,7 @@
 
     <servlet>
         <servlet-name>UserHome</servlet-name>
-        <servlet-class>SwapHome.User.Home.HomeServlet</servlet-class>
+        <servlet-class>swapHome.user.home.HomeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserHome</servlet-name>
@@ -74,7 +65,7 @@
 
     <servlet>
         <servlet-name>UserHomeInfo</servlet-name>
-        <servlet-class>SwapHome.User.Home.InfoServlet</servlet-class>
+        <servlet-class>swapHome.user.home.InfoServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserHomeInfo</servlet-name>
@@ -83,7 +74,7 @@
 
     <servlet>
         <servlet-name>UserHomeHousing</servlet-name>
-        <servlet-class>SwapHome.User.Home.HousingServlet</servlet-class>
+        <servlet-class>swapHome.user.home.HousingServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserHomeHousing</servlet-name>
@@ -91,8 +82,17 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UserHomeHousingOffers</servlet-name>
+        <servlet-class>swapHome.user.home.HousingOffersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserHomeHousingOffers</servlet-name>
+        <url-pattern>/user/home/offers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>User</servlet-name>
-        <servlet-class>SwapHome.User.UserServlet</servlet-class>
+        <servlet-class>swapHome.user.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>User</servlet-name>
@@ -100,7 +100,7 @@
     </servlet-mapping>
 	<servlet>
 		<servlet-name>Disconnect</servlet-name>
-		<servlet-class>SwapHome.User.DisconnectServlet</servlet-class>
+		<servlet-class>swapHome.user.DisconnectServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Disconnect</servlet-name>

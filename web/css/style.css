@@ -1,10 +1,4 @@
 /* Custom Stylesheet */
-/**
- * Use this file to override Materialize files so you can update
- * the core Materialize files in the future
- *
- * Made By MaterializeCSS.com
- */
 
 nav .brand-logo {
   color: #fff;
@@ -13,4 +7,11 @@ nav .brand-logo {
 .input-card {
   margin:0;
   box-shadow: none;
+}
+
+.modal.housing-info .modal-content {
+  padding-bottom: 0px;
+}
+.modal.housing-info .modal-content .collection {
+  margin-bottom: 0px;
 }
