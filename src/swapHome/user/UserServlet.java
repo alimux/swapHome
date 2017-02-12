@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 
 /**
 *Class which manage redirection if user is connected
@@ -28,15 +29,10 @@ public class UserServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // if user is valid redirect to account else authentication
         response.sendRedirect(
-            emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser)
-            ? "user/home" : "user/auth"
+            Auth.isAuthenticated(request) 
+            ? "user/home" 
+            : "user/auth"
         );
     }
 }

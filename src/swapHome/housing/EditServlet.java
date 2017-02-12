@@ -5,7 +5,9 @@ import java.io.*;
 import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 import users.db.User;
 import users.db.UserHandler;
 import utils.Utils;
@@ -14,6 +16,10 @@ import utils.Utils;
  * Classe permettant de créer des logements
  * @author Logan Lepage & Alexandre DUCREUX
  */
+ @MultipartConfig(fileSizeThreshold=1024*1024*10,    // 10 MB
+                  maxFileSize=1024*1024*50,          // 50 MB
+                  maxRequestSize=1024*1024*100,      // 100 MB
+                  location="/")
 public class EditServlet extends HttpServlet
   {
 
@@ -28,16 +34,8 @@ public class EditServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-         // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
+        if(!Auth.isAuthenticated(request))
             response.sendRedirect("../user/auth");
-            return;
-        }
 
         // Si le logement n'existe pas, return
         if(!(request.getParameter("id") != null)) {
@@ -47,7 +45,7 @@ public class EditServlet extends HttpServlet
         Housing housing = HousingHandler.getDb().retrieve(
             Integer.parseInt(request.getParameter("id"))
         );
-        
+
         if(housing == null) {
             response.sendRedirect("../user/home/housing");
             return;
@@ -68,20 +66,12 @@ public class EditServlet extends HttpServlet
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException
+    {
+        User userSession = Auth.getAuthenticated(request);
+        if(userSession == null) response.sendRedirect("../user/auth");
 
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("../user/auth");
-            return;
-        }
-
-        User user = UserHandler.getDb().retrieve(emailUser);
+        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         int id = Integer.parseInt(request.getParameter("id"));
         String address = request.getParameter("address");
         String zipCode = request.getParameter("zipCode");
@@ -107,7 +97,7 @@ public class EditServlet extends HttpServlet
         this.log("room number " + roomNumber);
         this.log("Enregistrement de " + housing);
         housing.setId(id);
-        
+
         this.log("room number " + housing.getRoomNumber());
         HousingHandler.getDb().update(housing);
 

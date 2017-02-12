@@ -5,6 +5,7 @@ import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 /**
 *Class which manage the main page of account of swapHome project
 *@author Alexandre DUCREUX & Logan Lepage
@@ -27,16 +28,11 @@ public class HomeServlet extends HttpServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
-    {
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // if user is valid redirect to account info else authentication
+    {        
         response.sendRedirect(
-            emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser)
-            ? "home/info" : "../user/auth"
+            Auth.isAuthenticated(request) 
+            ? "home/info" 
+            : "../user/auth"
         );
     }
 }

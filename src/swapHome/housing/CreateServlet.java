@@ -8,6 +8,7 @@ import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 import users.db.User;
 import users.db.UserHandler;
 import utils.*;
@@ -17,7 +18,7 @@ import utils.*;
  * Servlet which is using to create housing
  * @author Logan Lepage & Alexandre DUCREUX
  */
-@MultipartConfig(fileSizeThreshold=1024*1024*10,    // 10 MB 
+@MultipartConfig(fileSizeThreshold=1024*1024*10,    // 10 MB
                  maxFileSize=1024*1024*50,          // 50 MB
                  maxRequestSize=1024*1024*100,      // 100 MB
                  location="/")
@@ -37,19 +38,10 @@ public class CreateServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-         // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
+        if(!Auth.isAuthenticated(request)) 
             response.sendRedirect("../user/auth");
-            return;
-        }
 
         //sending informations
-        
         List countries =  Utils.getCountriesList();
         List months = Utils.getMonthList();
         request.setAttribute("months", months);
@@ -63,24 +55,17 @@ public class CreateServlet extends HttpServlet
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("../user/auth");
-            return;
-        }
+    throws ServletException, IOException 
+    {
+        User userSession = Auth.getAuthenticated(request);
+        if(userSession == null) response.sendRedirect("../user/auth");
+        
         //Images files form setting
         // gets absolute path of the web application
         //File uploads = new File(SAVE_PATH);
         // constructs path of the directory to save uploaded file
         //String savePath = appPath + File.separator + SAVE_PATH;
-        
+
         // creates the save directory if it does not exists
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + SAVE_PATH + File.separator ;
@@ -89,41 +74,40 @@ public class CreateServlet extends HttpServlet
             fileSaveDir.mkdir();
         }
         System.out.println("upload directory : "+fileSaveDir.getAbsolutePath());
+
         //list of the differents images
         List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName())).collect(Collectors.toList());
         InputStream inputStream = null;
         OutputStream outputStream = null;
         for (Part part : fileParts) {
+
             String fileName = extractFileName(part);
             // refines the fileName in case it is an absolute path
             fileName = new File(fileName).getName();
             log("Nom du fichier extrait : "+fileName+" repertoire : "+fileSaveDir);
             System.out.println("Nom du fichier extrait : "+fileName +" repertoire : "+fileSaveDir+File.separator+fileName);
+
             //part.write(uploadFilePath+ File.separator + fileName);
-            try{
-            inputStream = part.getInputStream();
-            outputStream = new FileOutputStream(fileSaveDir+File.separator+fileName);
-            int read = 0;
-            final byte[] bytes = new byte[BUFFER];
-            while((read = inputStream.read(bytes))!=-1){
+            try {
+              inputStream = part.getInputStream();
+              outputStream = new FileOutputStream(fileSaveDir+File.separator+fileName);
+              int read = 0;
+              final byte[] bytes = new byte[BUFFER];
+              while((read = inputStream.read(bytes))!=-1)
+              {
                 outputStream.write(bytes,0, read);
-            }
-            }catch(Exception e){
+              }
+            } catch(Exception e) {
                 e.toString();
                 fileName="";
-            }finally{
-                if(outputStream!=null){
-                    outputStream.close();
-                }
-                if(inputStream!=null){
-                    inputStream.close();
-                }
+            } finally {
+                if(outputStream!=null) outputStream.close();
+                if(inputStream!=null) inputStream.close();
             }
         }
         request.setAttribute("upload", "upload ok!");
-        
-        
-        User user = UserHandler.getDb().retrieve(emailUser);
+
+        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         String address = request.getParameter("address");
         String zipCode = request.getParameter("zipCode");
         String city = request.getParameter("city");
@@ -131,15 +115,15 @@ public class CreateServlet extends HttpServlet
         String countryP2 = request.getParameter("countryP2");
         String description = request.getParameter("description");
         int surface = Integer.parseInt(request.getParameter("surface"));
-        
+
         log("Erreur parsing : "+surface);
         System.out.println("Erreur parsing "+surface);
-        
+
         int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
         int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
-        
+
         System.out.println("Parsing month"+monthPrefered);
-        
+
         Utils u = new Utils();
         if(!u.isValid(monthPrefered)){
             request.setAttribute("erreur", "Merci de sélectionner un mois valide !");
@@ -161,7 +145,7 @@ public class CreateServlet extends HttpServlet
         HousingHandler.getDb().create(housing);
         response.sendRedirect("../user/home/housing");
     }
-    
+
    /**
     * Method which extracts file name from HTTP header content-disposition
     */

@@ -7,6 +7,7 @@ import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 /**
 *Class which manage the main page of account of swapHome project
 *@author Alexandre DUCREUX & Logan Lepage
@@ -29,20 +30,12 @@ public class HousingServlet extends HttpServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
-    {
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("../../user/auth");
-            return;
-        }
+    {        
+        User userSession = Auth.getAuthenticated(request);
+        if(userSession == null) response.sendRedirect("../../user/auth");
 
         // Ajoute en attribut la liste des logements d'un utilisateur
-        User user = UserHandler.getDb().retrieve(emailUser);
+        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         request.setAttribute("housings", HousingHandler.getDb().listByUser(user));
 
         //sending informations

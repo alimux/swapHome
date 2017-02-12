@@ -5,6 +5,7 @@ import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpSession;
+import policies.Auth;
 /**
 *Class which manage the main page of account of swapHome project
 *@author Alexandre DUCREUX & Logan Lepage
@@ -28,20 +29,11 @@ public class InfoServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        // retrieve session information
-        HttpSession session = request.getSession();
-        String emailUser = (String) session.getAttribute( "emailUser" );
-        String passwordUser = (String) session.getAttribute( "passwordUser" );
-
-        // test si l'utilisateur est connecté
-        if(!(emailUser != null && passwordUser != null && UserHandler.getDb().isValid(emailUser, passwordUser))) {
-            response.sendRedirect("../../user/auth");
-            return;
-        }
-
+        User userSession = Auth.getAuthenticated(request);
+        if(userSession == null) response.sendRedirect("../../user/auth");
+        
         //sending informations
-        //retrieving current user
-        User user = UserHandler.getDb().retrieve(emailUser);
+        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         String message = user.getFirstNameUser()+" "+user.getNameUser();
         request.setAttribute("message", message);
         this.getServletContext().getRequestDispatcher("/user/home/info.jsp").forward(request, response);
