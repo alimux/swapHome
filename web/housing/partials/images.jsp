@@ -1,61 +1,50 @@
-<div class="row" id="images">
-<c:if test="${ !empty fichier }"><p><c:out value="Le fichier ${ fichier } (${ description }) a été uploadé !" /></p></c:if>
+<div class="row no-margin multiple-input-image-viewer">
   <!-- Modal Trigger -->
-  <a href="#addImage">Ajouter une image</a>
-
-  <!-- Modal Structure -->
-  <div id="addImage" class="modal">
-    <div class="card input-card horizontal">
-      <div class="card-image">
-        <img id="image"/>
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <span class="card-title">Chercher une image</span>
-          <div class="file-field input-field">
-            <div class="btn"><span>Image</span>
-              <input id="file-input" name="file" type="file" onchange="onImageChange(this)" multiple="true" required/>
-            </div>
-            <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" />
-            </div>
-          </div>
-        </div>
-        <div class="card-action">
-          <a class="waves-effect waves-teal right btn-flat"
-            onclick="onCardValid(
-            document.getElementById('file-input'))">Valider</a>
-        </div>
+  <input class="files-input" id="files-input" name="file[]" type="file" multiple />
+  <label for="files-input" class="files-input-label">
+    <div style="display: table; width: 100%; height: 100%;">
+      <div style="display: table-cell; vertical-align: middle;">
+        Choisissez une ou plusieurs images
       </div>
     </div>
-    <div id="images-input"></div>
+  </label>
+  <div class="multiple-input-images"></div>
   <script>
-    var container = document.getElementById("images")
-    var containerInputs = document.getElementById("images-input");
-    var imageViewer = document.getElementById("image-viewer");
-    var onImageChange = function (input) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-          document.getElementById("image").src = e.target.result;
-      };
-      reader.readAsDataURL(input.files[0]);
-    };
-    function onCardValid(input) {
-      createImage(input)
-    }
-    function createImage(input) {
-      var cloneInput = input.cloneNode(true);
-      cloneInput.name = "images[]"
-      cloneInput.className = "hide";
-      containerInputs.appendChild(cloneInput);
+    window.onload = function(){
+      //Check File API support
+      if(!(window.File && window.FileList && window.FileReader)) {
+        console.log("Your browser does not support File API"); return;
+      }
 
-      var div = document.createElement("div");
-      div.className = "col s3";
-      var image = document.createElement("img");
-      image.src = document.getElementById("image").src;
-      image.style.width = "100%";
-      div.appendChild(image);
-      container.appendChild(div);
+      var filesInput = document.getElementsByClassName("files-input");
+      for (var i = 0; i < filesInput.length; i++) {
+
+        filesInput[i].addEventListener("change", function(e) {
+          var files = e.target.files; //FileList object
+          var container = e.target.parentElement.getElementsByClassName("multiple-input-images")[0];
+          container.innerHTML = "";
+          for(var i = 0; i < files.length; i++) {
+            var file = files[i];
+
+            //Only pics
+            if(!file.type.match('image.*')) continue;
+            var picReader = new FileReader();
+
+            picReader.addEventListener("load", function(e) {
+              //add a loaded pic
+              var picFile = e.target;
+              var div = document.createElement("div");
+              div.className = "col s3";
+              div.innerHTML = "<img src='" + picFile.result + "'" +
+                "title='" + picFile.name + "' style='width: 100%;'/>";
+              container.appendChild(div);
+            });
+
+             //Read the image
+            picReader.readAsDataURL(file);
+          }
+        });
+      }
     }
   </script>
 </div>

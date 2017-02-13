@@ -3,12 +3,12 @@ package swapHome.housing;
 import housing.db.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import policies.Auth;
+import services.Upload;
 import users.db.User;
 import users.db.UserHandler;
 import utils.*;
@@ -23,8 +23,11 @@ import utils.*;
                  maxRequestSize=1024*1024*100,      // 100 MB
                  location="/")
 public class CreateServlet extends HttpServlet
-  {
+{
 
+    public static final int BUFFER = 10240;
+    public static final String SAVE_PATH = "housingImages";
+    
     /**
      * calling servlet
      * @param request
@@ -32,14 +35,12 @@ public class CreateServlet extends HttpServlet
      * @throws ServletException
      * @throws IOException
      */
-    public static final int BUFFER = 10240;
-    public static final String SAVE_PATH = "housingImages";
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        if(!Auth.isAuthenticated(request)) 
-            response.sendRedirect("../user/auth");
+        if(!Auth.isAuthenticated(request))
+            { response.sendRedirect("../user/auth"); return; }
 
         //sending informations
         List countries =  Utils.getCountriesList();
@@ -55,57 +56,10 @@ public class CreateServlet extends HttpServlet
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException 
+    throws ServletException, IOException
     {
         User userSession = Auth.getAuthenticated(request);
         if(userSession == null) response.sendRedirect("../user/auth");
-        
-        //Images files form setting
-        // gets absolute path of the web application
-        //File uploads = new File(SAVE_PATH);
-        // constructs path of the directory to save uploaded file
-        //String savePath = appPath + File.separator + SAVE_PATH;
-
-        // creates the save directory if it does not exists
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + File.separator + SAVE_PATH + File.separator ;
-        File fileSaveDir = new File(uploadFilePath);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdir();
-        }
-        System.out.println("upload directory : "+fileSaveDir.getAbsolutePath());
-
-        //list of the differents images
-        List<Part> fileParts = request.getParts().stream().filter(part -> "file".equals(part.getName())).collect(Collectors.toList());
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        for (Part part : fileParts) {
-
-            String fileName = extractFileName(part);
-            // refines the fileName in case it is an absolute path
-            fileName = new File(fileName).getName();
-            log("Nom du fichier extrait : "+fileName+" repertoire : "+fileSaveDir);
-            System.out.println("Nom du fichier extrait : "+fileName +" repertoire : "+fileSaveDir+File.separator+fileName);
-
-            //part.write(uploadFilePath+ File.separator + fileName);
-            try {
-              inputStream = part.getInputStream();
-              outputStream = new FileOutputStream(fileSaveDir+File.separator+fileName);
-              int read = 0;
-              final byte[] bytes = new byte[BUFFER];
-              while((read = inputStream.read(bytes))!=-1)
-              {
-                outputStream.write(bytes,0, read);
-              }
-            } catch(Exception e) {
-                e.toString();
-                fileName="";
-            } finally {
-                if(outputStream!=null) outputStream.close();
-                if(inputStream!=null) inputStream.close();
-            }
-        }
-        request.setAttribute("upload", "upload ok!");
 
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         String address = request.getParameter("address");
@@ -115,22 +69,15 @@ public class CreateServlet extends HttpServlet
         String countryP2 = request.getParameter("countryP2");
         String description = request.getParameter("description");
         int surface = Integer.parseInt(request.getParameter("surface"));
-
-        log("Erreur parsing : "+surface);
-        System.out.println("Erreur parsing "+surface);
-
         int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
         int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
-
-        System.out.println("Parsing month"+monthPrefered);
-
         Utils u = new Utils();
         if(!u.isValid(monthPrefered)){
             request.setAttribute("erreur", "Merci de sélectionner un mois valide !");
             this.getServletContext().getRequestDispatcher("/user/housing/createHouse.jsp").forward(request, response);
         }
-
-        // recording in DB with hibernate
+        
+        // Ajout dans la DB
         Housing housing;
         if(request.getParameter("type").equals("house")) {
           int gardenSurface = Integer.parseInt(request.getParameter("gardenSurface"));
@@ -140,23 +87,30 @@ public class CreateServlet extends HttpServlet
             housing = new Apartment(user, address, zipCode, city, countryP1,
                 countryP2, description, surface, roomNumber, monthPrefered );
         }
-
-        this.log("Enregistrement de " + housing);
-        HousingHandler.getDb().create(housing);
-        response.sendRedirect("../user/home/housing");
-    }
-
-   /**
-    * Method which extracts file name from HTTP header content-disposition
-    */
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length()-1);
+        
+        /**
+         * Initialise le répertoire d'upload, 
+         * prépare et importe les images de l'input multiple file[].
+         */
+        File fileSaveDir = Upload.initDirectory(request, SAVE_PATH);
+        List<Part> fileParts = Upload.getParts(request, "file[]");
+        HashSet<HousingImage> housingImages = new HashSet<>();
+        for (Part part : fileParts) {
+            if(Upload.isImage(part)) { // si ce n'est pas une image, on n'ajoute pas
+                String fileName = Upload.extractFileName(part);
+                fileName = String.valueOf(System.currentTimeMillis())
+                    + userSession.getEmailUser()
+                    + new File(fileName).getName(); // refines the fileName in case it is an absolute path
+                String encodedFileName = Upload.encode(fileName)
+                    + "." + Upload.getImageFormat(part);
+                housingImages.add(new HousingImage(encodedFileName, housing));
+                Upload.importFile(part, fileSaveDir, encodedFileName, BUFFER);
             }
         }
-        return null;
+        housing.setImages(housingImages);
+
+        log("Enregistrement de " + housing);
+        HousingHandler.getDb().create(housing);
+        response.sendRedirect("../user/home/housing");
     }
 }

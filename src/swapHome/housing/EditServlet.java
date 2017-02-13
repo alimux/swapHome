@@ -2,12 +2,16 @@ package swapHome.housing;
 
 import housing.db.*;
 import java.io.*;
+import java.util.HashSet;
 import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import policies.Auth;
+import services.Upload;
+import static swapHome.housing.CreateServlet.BUFFER;
+import static swapHome.housing.CreateServlet.SAVE_PATH;
 import users.db.User;
 import users.db.UserHandler;
 import utils.Utils;
@@ -20,9 +24,12 @@ import utils.Utils;
                   maxFileSize=1024*1024*50,          // 50 MB
                   maxRequestSize=1024*1024*100,      // 100 MB
                   location="/")
-public class EditServlet extends HttpServlet
-  {
+public class EditServlet extends HttpServlet 
+{
 
+    public static final int BUFFER = 10240;
+    public static final String SAVE_PATH = "housingImages";
+    
     /**
      * calling servlet
      * @param request
@@ -35,7 +42,7 @@ public class EditServlet extends HttpServlet
     throws ServletException, IOException
     {
         if(!Auth.isAuthenticated(request))
-            response.sendRedirect("../user/auth");
+            { response.sendRedirect("../user/auth"); return; }
 
         // Si le logement n'existe pas, return
         if(!(request.getParameter("id") != null)) {
@@ -93,12 +100,30 @@ public class EditServlet extends HttpServlet
             housing = new Apartment(user, address, zipCode, city, countryP1,
                 countryP2, description, surface, roomNumber, monthPrefered );
         }
+        
+        /**
+         * Initialise le répertoire d'upload, 
+         * prépare et importe les images de l'input multiple file[].
+         */
+        File fileSaveDir = Upload.initDirectory(request, SAVE_PATH);
+        List<Part> fileParts = Upload.getParts(request, "file[]");
+        HashSet<HousingImage> housingImages = new HashSet<>();
+        for (Part part : fileParts) {
+            if(Upload.isImage(part)) { // si ce n'est pas une image, on n'ajoute pas
+                String fileName = Upload.extractFileName(part);
+                fileName = String.valueOf(System.currentTimeMillis())
+                    + userSession.getEmailUser()
+                    + new File(fileName).getName(); // refines the fileName in case it is an absolute path
+                String encodedFileName = Upload.encode(fileName)
+                    + "." + Upload.getImageFormat(part);
+                housingImages.add(new HousingImage(SAVE_PATH+File.separator+encodedFileName, housing));
+                Upload.importFile(part, fileSaveDir, encodedFileName, BUFFER);
+            }
+        }
+        housing.setImages(housingImages);
 
-        this.log("room number " + roomNumber);
-        this.log("Enregistrement de " + housing);
+        this.log("Modification de " + housing);
         housing.setId(id);
-
-        this.log("room number " + housing.getRoomNumber());
         HousingHandler.getDb().update(housing);
 
         //setting session

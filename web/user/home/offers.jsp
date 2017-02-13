@@ -103,6 +103,14 @@
         <!-- card -->
         <div class="col s6">
           <div class="card grey lighten-4">
+            <c:if test="${not empty item.images}">
+              <c:set var="fistHousing" value="${item.images.iterator().next()}"/>
+              <div class="card-image">
+                <img src="<%= request.getContextPath() %>/${fistHousing.name}"
+                class="materialboxed" data-caption="Image du logement"
+                src="<%= request.getContextPath() %>/${fistHousing.name}">
+              </div>
+            </c:if>
             <div class="card-content blue-grey-text darken-1">
               <span class="card-title">${isApartment ? "Appartement" : "Maison"}</span>
               <p>

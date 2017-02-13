@@ -27,7 +27,7 @@ public class HousingOffersServlet extends HttpServlet
     throws ServletException, IOException
     {
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) response.sendRedirect("../../user/auth");
+        if(userSession == null) { response.sendRedirect("../auth"); return; }
       
         // Ajoute en attribut la liste des logements compatibles pour un utilisateur
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
@@ -42,7 +42,7 @@ public class HousingOffersServlet extends HttpServlet
     throws ServletException, IOException
     {
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) response.sendRedirect("../../user/auth");
+        if(userSession == null) { response.sendRedirect("../auth"); return; }
 
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         String zipCode = request.getParameter("zipCode") != null && !request.getParameter("zipCode").isEmpty()

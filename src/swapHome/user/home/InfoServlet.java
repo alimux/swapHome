@@ -30,7 +30,7 @@ public class InfoServlet extends HttpServlet
     throws ServletException, IOException
     {
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) response.sendRedirect("../../user/auth");
+        if(userSession == null) { response.sendRedirect("../auth"); return; }
         
         //sending informations
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());

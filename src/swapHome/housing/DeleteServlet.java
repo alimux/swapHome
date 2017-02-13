@@ -28,7 +28,7 @@ public class DeleteServlet extends HttpServlet
     throws ServletException, IOException
     {
         if(!Auth.isAuthenticated(request))
-            response.sendRedirect("../user/auth");
+            { response.sendRedirect("../user/auth"); return; }
 
         // Supprime le logement s'il existe 
         if(request.getParameter("id") != null) {

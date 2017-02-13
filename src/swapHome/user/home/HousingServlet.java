@@ -32,7 +32,7 @@ public class HousingServlet extends HttpServlet
     throws ServletException, IOException
     {        
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) response.sendRedirect("../../user/auth");
+        if(userSession == null) { response.sendRedirect("../auth"); return; }
 
         // Ajoute en attribut la liste des logements d'un utilisateur
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());

@@ -86,7 +86,7 @@
                 </div>
               </div>
             </fieldset>
-            <fieldset>
+            <fieldset class="no-padding">
               <legend>Images</legend>
               <jsp:include page="partials/images.jsp" />
             </fieldset>

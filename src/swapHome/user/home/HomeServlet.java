@@ -30,9 +30,7 @@ public class HomeServlet extends HttpServlet
     throws ServletException, IOException
     {        
         response.sendRedirect(
-            Auth.isAuthenticated(request) 
-            ? "home/info" 
-            : "../user/auth"
+            Auth.isAuthenticated(request) ? "home/info" : "auth"
         );
     }
 }
