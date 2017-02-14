@@ -21,7 +21,7 @@
                   <label for="address">Adresse</label>
                 </div>
                 <div class="input-field col s4">
-                  <input id="zipCode" name="zipCode" size="10" type="number" class="validate" required>
+                  <input id="zipCode" name="zipCode" size="10" type="text" class="validate" required>
                   <label for="zipCode">Code postal</label>
                 </div>
                 <div class="input-field col s4">
@@ -88,7 +88,15 @@
             </fieldset>
             <fieldset class="no-padding">
               <legend>Images</legend>
-              <jsp:include page="partials/images.jsp" />
+              <div class="row no-margin multiple-input-image-viewer">
+                <input class="files-input" id="files-input" name="file[]" type="file" multiple required />
+                <label for="files-input" class="files-input-label">
+                  <div class="center-container"><div class="center-child">
+                    Choisissez une ou plusieurs images
+                  </div></div>
+                </label>
+                <div class="multiple-input-images"></div>
+              </div>
             </fieldset>
             <div class="row center">
               <br/>

@@ -12,13 +12,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import users.db.*;
 
-
 /**
-*Class which manage connection to the app
-*@author Alexandre DUCREUX & Logan Lepage
-*@4 novembre 2016
-*/
-
+ * Class which manage connection to the app
+ * @author Alexandre DUCREUX & Logan Lepage
+ */
 public class AuthServlet extends HttpServlet
 {
     /**
@@ -47,6 +44,7 @@ public class AuthServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
         String emailUser = request.getParameter("emailUser");
         String passwordUser = request.getParameter("passwordUser");
         
@@ -65,8 +63,9 @@ public class AuthServlet extends HttpServlet
                
         // if ok, set session & redirect
         HttpSession session = request.getSession();
-        session.setAttribute( "emailUser", emailUser );
-        session.setAttribute( "passwordUser", passwordUser );
+        session.setAttribute( "emailUser", user.getEmailUser() );
+        session.setAttribute( "passwordUser", user.getPasswordUser() );
+        session.setAttribute( "isAdminUser", user.isAdminUser() );
         response.sendRedirect("home");
     }
 }

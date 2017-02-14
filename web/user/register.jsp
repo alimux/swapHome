@@ -37,7 +37,7 @@
               </div>
               <div class="row">
                 <div class="input-field col s6">
-                  <input id="zipCodeUser" name="zipCodeUser" size="10" type="number" class="validate" required>
+                  <input id="zipCodeUser" name="zipCodeUser" size="10" type="text" class="validate" required>
                   <label for="zipCodeUser">Code postal</label>
                 </div>
                 <div class="input-field col s6">

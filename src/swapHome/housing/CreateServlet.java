@@ -6,7 +6,6 @@ import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpSession;
 import policies.Auth;
 import services.Upload;
 import users.db.User;
@@ -58,6 +57,7 @@ public class CreateServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
         User userSession = Auth.getAuthenticated(request);
         if(userSession == null) response.sendRedirect("../user/auth");
 
@@ -103,7 +103,7 @@ public class CreateServlet extends HttpServlet
                     + new File(fileName).getName(); // refines the fileName in case it is an absolute path
                 String encodedFileName = Upload.encode(fileName)
                     + "." + Upload.getImageFormat(part);
-                housingImages.add(new HousingImage(encodedFileName, housing));
+                housingImages.add(new HousingImage(SAVE_PATH+File.separator+encodedFileName, housing));
                 Upload.importFile(part, fileSaveDir, encodedFileName, BUFFER);
             }
         }

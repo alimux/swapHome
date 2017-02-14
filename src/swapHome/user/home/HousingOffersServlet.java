@@ -5,7 +5,6 @@ import users.db.*;
 import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
-import javax.servlet.http.HttpSession;
 import policies.Auth;
 
 /**
@@ -41,6 +40,7 @@ public class HousingOffersServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
         User userSession = Auth.getAuthenticated(request);
         if(userSession == null) { response.sendRedirect("../auth"); return; }
 

@@ -7,6 +7,12 @@ import users.db.UserHandler;
 
 public class Auth {
     
+    public static boolean isAuthenticatedAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return getAuthenticated(request) != null && 
+            (Boolean) session.getAttribute( "isAdminUser" );
+    }
+    
     public static boolean isAuthenticated(HttpServletRequest request) {
         return getAuthenticated(request) != null;
     }
@@ -19,9 +25,9 @@ public class Auth {
 
         // test si l'utilisateur est connecté
         return  (emailUser != null 
-                    && passwordUser != null
-                    && UserHandler.getDb().isValid(emailUser, passwordUser)) 
-                ? new User(emailUser, passwordUser) : null;
+            && passwordUser != null
+            && UserHandler.getDb().isValid(emailUser, passwordUser)) 
+        ? new User(emailUser, passwordUser) : null;
     }
     
 }

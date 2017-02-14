@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpSession;
 import policies.Auth;
 import services.Upload;
 import static swapHome.housing.CreateServlet.BUFFER;
@@ -41,21 +40,17 @@ public class EditServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
-        if(!Auth.isAuthenticated(request))
-            { response.sendRedirect("../user/auth"); return; }
-
-        // Si le logement n'existe pas, return
-        if(!(request.getParameter("id") != null)) {
-            response.sendRedirect("../user/home/housing");
-            return;
+        //droit à tous les administrateur et à l'utilisateur lié
+        User userSession = Auth.getAuthenticated(request);
+        if(userSession == null) { response.sendRedirect("../user/auth"); return; }
+        User u = UserHandler.getDb().retrieve(userSession.getEmailUser());
+        if(request.getParameter("id") == null) {
+            response.sendRedirect("../user/home/housing"); return;
         }
-        Housing housing = HousingHandler.getDb().retrieve(
-            Integer.parseInt(request.getParameter("id"))
-        );
-
-        if(housing == null) {
-            response.sendRedirect("../user/home/housing");
-            return;
+        Housing h = HousingHandler.getDb().retrieve(Integer.parseInt(request.getParameter("id")));
+        if(h == null || ((u.isAdminUser() == null || !u.isAdminUser()) 
+            && !h.getUser().getEmailUser().equals(u.getEmailUser()))) {
+            response.sendRedirect("../user/home/housing"); return;
         }
 
         //sending informations
@@ -63,9 +58,9 @@ public class EditServlet extends HttpServlet
         List months = Utils.getMonthList();
         request.setAttribute("months", months);
         request.setAttribute("countries", countries);
-        request.setAttribute("housing", housing);
+        request.setAttribute("housing", h);
         this.getServletContext().getRequestDispatcher(
-                housing.getClass() == Apartment.class
+                h.getClass() == Apartment.class
                 ? "/housing/editApartment.jsp"
                 : "/housing/editHouse.jsp"
         ).forward(request, response);
@@ -75,30 +70,32 @@ public class EditServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
+        //droit à tous les administrateur et à l'utilisateur lié
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) response.sendRedirect("../user/auth");
+        if(userSession == null) { response.sendRedirect("../user/auth"); return; }
+        User u = UserHandler.getDb().retrieve(userSession.getEmailUser());
+        if(request.getParameter("id") == null) {
+            response.sendRedirect("../user/home/housing"); return;
+        }
+        Housing h = HousingHandler.getDb().retrieve(Integer.parseInt(request.getParameter("id")));
+        if(h == null || ((u.isAdminUser() == null || !u.isAdminUser()) 
+            && !h.getUser().getEmailUser().equals(u.getEmailUser()))) {
+            response.sendRedirect("../user/home/housing"); return;
+        }
 
-        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
-        int id = Integer.parseInt(request.getParameter("id"));
-        String address = request.getParameter("address");
-        String zipCode = request.getParameter("zipCode");
-        String city = request.getParameter("city");
-        String countryP1 = request.getParameter("countryP1");
-        String countryP2 = request.getParameter("countryP2");
-        String description = request.getParameter("description");
-        int surface = Integer.parseInt(request.getParameter("surface"));
-        int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));
-        int monthPrefered = Integer.parseInt(request.getParameter("monthPrefered"));
-
-        // recording in DB with hibernate
-        Housing housing;
+        //changement des paramètres
+        h.setAddress(       request.getParameter("address"));
+        h.setZipCode(       request.getParameter("zipCode"));
+        h.setCity(          request.getParameter("city"));
+        h.setCountryP1(     request.getParameter("countryP1"));
+        h.setCountryP2(     request.getParameter("countryP2"));
+        h.setDescription(   request.getParameter("description"));
+        h.setSurface(       Integer.parseInt(request.getParameter("surface")));
+        h.setRoomNumber(    Integer.parseInt(request.getParameter("roomNumber")));
+        h.setMonthPrefered( Integer.parseInt(request.getParameter("monthPrefered")));
         if(request.getParameter("type").equals("house")) {
-            int gardenSurface = Integer.parseInt(request.getParameter("gardenSurface"));
-            housing = new House(user, address, zipCode, city, countryP1,
-                countryP2, description, surface, roomNumber, monthPrefered, gardenSurface );
-        } else {
-            housing = new Apartment(user, address, zipCode, city, countryP1,
-                countryP2, description, surface, roomNumber, monthPrefered );
+            ((House) h).setGardenSurface( Integer.parseInt(request.getParameter("gardenSurface")));
         }
         
         /**
@@ -108,26 +105,43 @@ public class EditServlet extends HttpServlet
         File fileSaveDir = Upload.initDirectory(request, SAVE_PATH);
         List<Part> fileParts = Upload.getParts(request, "file[]");
         HashSet<HousingImage> housingImages = new HashSet<>();
-        for (Part part : fileParts) {
-            if(Upload.isImage(part)) { // si ce n'est pas une image, on n'ajoute pas
-                String fileName = Upload.extractFileName(part);
-                fileName = String.valueOf(System.currentTimeMillis())
-                    + userSession.getEmailUser()
-                    + new File(fileName).getName(); // refines the fileName in case it is an absolute path
-                String encodedFileName = Upload.encode(fileName)
-                    + "." + Upload.getImageFormat(part);
-                housingImages.add(new HousingImage(SAVE_PATH+File.separator+encodedFileName, housing));
-                Upload.importFile(part, fileSaveDir, encodedFileName, BUFFER);
+        if(!fileParts.isEmpty()) { // si on veut changer nos images
+            boolean isEmpty = true;
+                    
+            //et on ajoute les nouvelles
+            for (Part part : fileParts) {
+                if(Upload.isImage(part)) { //si ce n'est pas une image, on n'ajoute pas
+                    if(isEmpty) { //au premier passage, on supprime les autres images
+                        isEmpty = false;
+                        //alors on supprime les anciennes images
+                        for(HousingImage image : h.getImages()) {
+                            Upload.removeFile(fileSaveDir, File.separator+new File("../"+image.getName()).getName());
+                        }
+                        HousingHandler.getDb().deleteImages(h);
+                    }
+                    
+                    String fileName = Upload.extractFileName(part);
+                    fileName = String.valueOf(System.currentTimeMillis())
+                        + userSession.getEmailUser()
+                        + new File(fileName).getName(); //refines the fileName in case it is an absolute path
+                    String encodedFileName = Upload.encode(fileName)
+                        + "." + Upload.getImageFormat(part);
+                    housingImages.add(new HousingImage(SAVE_PATH+File.separator+encodedFileName, h));
+                    Upload.importFile(part, fileSaveDir, encodedFileName, BUFFER);
+                }
             }
+            if(!isEmpty)
+                h.setImages(housingImages);
         }
-        housing.setImages(housingImages);
-
-        this.log("Modification de " + housing);
-        housing.setId(id);
-        HousingHandler.getDb().update(housing);
-
+        log("Modification de " + h);
+        HousingHandler.getDb().update(h);
+        
         //setting session
-        response.sendRedirect("../user/home/housing");
+        response.sendRedirect(
+            (u.isAdminUser() == null || !u.isAdminUser())
+            ? "../user/home/housing"
+            : "../user/admin/housing"
+        );
     }
 
 }

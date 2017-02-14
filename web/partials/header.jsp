@@ -19,14 +19,16 @@
       <div class="nav-wrapper container">
         <a id="logo-container" href="<%= request.getContextPath() %>/index.jsp" class="brand-logo"><img src="<%= request.getContextPath() %>/images/logoSwapHome.jpg" height="60"></a>
         <ul class="right hide-on-med-and-down">
+          <c:if test="${ !empty sessionScope.emailUser and sessionScope.isAdminUser }">
+            <li><a href="<%= request.getContextPath() %>/user/admin"><i class="material-icons left">create</i>Modération</a></li>
+          </c:if>
           <c:if test="${ !empty sessionScope.emailUser }">
-            <li><a href="<%= request.getContextPath() %>/user/home"><i class="material-icons left">account_box</i>Mon compte </a></li>
-            <li>
-              <a href="<%= request.getContextPath() %>/user/disconnect"><i class="material-icons left">input</i>Déconnexion</a>
+            <li><a href="<%= request.getContextPath() %>/user/home"><i class="material-icons left">account_box</i>Mon compte</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/disconnect"><i class="material-icons left">input</i>Déconnexion</a>
           </c:if>
           <c:if test="${ empty sessionScope.emailUser }">
-          <li><a href="<%= request.getContextPath() %>/user/register"><i class="material-icons left">assignment_ind</i>Inscription </a></li>
-          <li><a href="<%= request.getContextPath() %>/user/auth"><i class="material-icons left">account_circle</i>Se Connecter</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/register"><i class="material-icons left">assignment_ind</i>Inscription</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/auth"><i class="material-icons left">account_circle</i>Se Connecter</a></li>
           </c:if>
         </ul>
         <ul id="nav-mobile" class="side-nav">

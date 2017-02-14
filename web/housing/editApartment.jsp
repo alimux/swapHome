@@ -14,7 +14,7 @@
             <p class="center red-text text-darken-4">${erreur}</p>
             <p class="center">Modifier un appartement avec le formulaire si dessous</p>
             <fieldset>
-              <legend>Adresse du logement</legend>
+              <legend>Adresse</legend>
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">home</i>
@@ -23,7 +23,7 @@
                   <label for="address">Adresse</label>
                 </div>
                 <div class="input-field col s4">
-                  <input id="zipCode" name="zipCode" size="10" type="number" class="validate"
+                  <input id="zipCode" name="zipCode" size="10" type="text" class="validate"
                     value="${housing.zipCode}" required>
                   <label for="zipCode">Code postal</label>
                 </div>
@@ -47,7 +47,7 @@
               </div>
             </fieldset>
             <fieldset>
-              <legend>Informations relative au logement</legend>
+              <legend>Informations</legend>
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">info outline</i>
@@ -102,7 +102,21 @@
             </fieldset>
             <fieldset class="no-padding">
               <legend>Images</legend>
-              <jsp:include page="partials/images.jsp" />
+              <div class="row no-margin multiple-input-image-viewer">
+                <input class="files-input" id="files-input" name="file[]" type="file" multiple />
+                <label for="files-input" class="files-input-label">
+                  <div class="center-container"><div class="center-child">
+                    Choisissez une ou plusieurs images
+                  </div></div>
+                </label>
+                <div class="multiple-input-images">
+                  <c:if test="${not empty housing.images}">
+                    <c:forEach items="${housing.images}" var="image"><div class="col s3">
+                      <img src='<%= request.getContextPath() %>/${image.name}' style='width: 100%;'/>
+                    </div></c:forEach>
+                  </c:if>
+                </div>
+              </div>
             </fieldset>
             <div class="row center">
               <br/>

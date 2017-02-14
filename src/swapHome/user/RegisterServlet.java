@@ -7,9 +7,7 @@ import javax.servlet.http.*;
 
 /**
  * Class which manage registering
- *
  * @author Alexandre DUCREUX & Logan Lepage
- * @4 novembre 2016
  */
 public class RegisterServlet extends HttpServlet {
 
@@ -41,7 +39,9 @@ public class RegisterServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        
         //Retrieve form info
         String nameUser = request.getParameter("nameUser");
         String firstNameUser = request.getParameter("firstNameUser");

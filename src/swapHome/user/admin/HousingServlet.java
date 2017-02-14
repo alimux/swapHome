@@ -1,7 +1,10 @@
-package swapHome.user.home;
+package swapHome.user.admin;
 
+import swapHome.user.home.*;
+import housing.db.*;
 import users.db.*;
 import java.io.*;
+import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import policies.Auth;
@@ -10,7 +13,7 @@ import policies.Auth;
  * Class which manage the main page of account of swapHome project
  * @author Alexandre DUCREUX & Logan Lepage
  */
-public class InfoServlet extends HttpServlet
+public class HousingServlet extends HttpServlet
   {
     //stub
     //public static PersonDBStub dataBase = new PersonDBStub();
@@ -26,14 +29,15 @@ public class InfoServlet extends HttpServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
-    {
+    {        
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) { response.sendRedirect("../auth"); return; }
-        
+        if(userSession == null || !Auth.isAuthenticatedAdmin(request)) 
+            { response.sendRedirect("../auth"); return; }
+
+        // Ajoute en attribut la liste des logements
+        request.setAttribute("housings", HousingHandler.getDb().list());
+
         //sending informations
-        User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
-        String message = user.getFirstNameUser()+" "+user.getNameUser();
-        request.setAttribute("message", message);
-        this.getServletContext().getRequestDispatcher("/user/home/info.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/user/admin/housing.jsp").forward(request, response);
     }
 }

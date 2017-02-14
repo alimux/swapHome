@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
  * @author Alexandre DUCREUX & Logan Lepage 2017
  * Class which disconnect user from his session
  */
-
 public class DisconnectServlet extends HttpServlet{
 
     private static final String DISCONNECT = "/index.jsp";

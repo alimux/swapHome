@@ -55,6 +55,33 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UserAdmin</servlet-name>
+        <servlet-class>swapHome.user.admin.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserAdmin</servlet-name>
+        <url-pattern>/user/admin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserAdminInfo</servlet-name>
+        <servlet-class>swapHome.user.admin.InfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserAdminInfo</servlet-name>
+        <url-pattern>/user/admin/info</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserAdminHousing</servlet-name>
+        <servlet-class>swapHome.user.admin.HousingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserAdminHousing</servlet-name>
+        <url-pattern>/user/admin/housing</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>UserHome</servlet-name>
         <servlet-class>swapHome.user.home.HomeServlet</servlet-class>
     </servlet>

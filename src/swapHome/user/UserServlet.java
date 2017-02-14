@@ -11,11 +11,9 @@ import javax.servlet.http.HttpSession;
 import policies.Auth;
 
 /**
-*Class which manage redirection if user is connected
-*@author Alexandre Ducreux & Logan LEPAGE
-*@25 novembre 2016
+* Class which manage redirection if user is connected
+* @author Alexandre Ducreux & Logan LEPAGE
 */
-
 public class UserServlet extends HttpServlet
 {    
     /**

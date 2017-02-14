@@ -64,6 +64,21 @@ public class Upload {
         }
     }
     
+    public static void removeFile(File fileSaveDir, String fileName) 
+    throws IOException {
+        try{
+            File file = new File(fileSaveDir+fileName);
+            if(file.delete()){
+                System.out.println(file.getName() + " est supprimé!");
+                    
+            } else {
+                System.out.println("L'opération de suppression à échouée.");
+            }
+    	} catch(Exception e) {
+            e.printStackTrace();
+    	}
+    }
+    
     /**
      * Encode Base64
      * @param str

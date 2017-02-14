@@ -6,14 +6,12 @@ import java.io.*;
 import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
-import javax.servlet.http.HttpSession;
 import policies.Auth;
-/**
-*Class which manage the main page of account of swapHome project
-*@author Alexandre DUCREUX & Logan Lepage
-*@4 novembre 2016
-*/
 
+/**
+ * Class which manage the main page of account of swapHome project
+ * @author Alexandre DUCREUX & Logan Lepage
+ */
 public class HousingServlet extends HttpServlet
   {
     //stub

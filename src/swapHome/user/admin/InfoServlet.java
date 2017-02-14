@@ -1,5 +1,6 @@
-package swapHome.user.home;
+package swapHome.user.admin;
 
+import swapHome.user.admin.*;
 import users.db.*;
 import java.io.*;
 import javax.servlet.http.*;
@@ -28,12 +29,13 @@ public class InfoServlet extends HttpServlet
     throws ServletException, IOException
     {
         User userSession = Auth.getAuthenticated(request);
-        if(userSession == null) { response.sendRedirect("../auth"); return; }
+        if(userSession == null || !Auth.isAuthenticatedAdmin(request)) 
+            { response.sendRedirect("../auth"); return; }
         
         //sending informations
         User user = UserHandler.getDb().retrieve(userSession.getEmailUser());
         String message = user.getFirstNameUser()+" "+user.getNameUser();
         request.setAttribute("message", message);
-        this.getServletContext().getRequestDispatcher("/user/home/info.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/user/admin/info.jsp").forward(request, response);
     }
 }

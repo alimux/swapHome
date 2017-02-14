@@ -14,8 +14,8 @@
           <h5 class="center blue-text text-darken-4">Votre Espace perso</h5>
         </div>
         <div class="row">
-          <p>Bienvenue ${message} dans votre espace personnel</p>
-          <p>Vous pouvez gérer vos logements, et voir les offres compatibles à l'aide du menu sur votre gauche.</p>
+          <p>Bienvenue ${message} dans votre espace d'administration</p>
+          <p>Vous pouvez gérer les logements à l'aide du menu sur votre gauche.</p>
         </div>
       </div>
     </div>
