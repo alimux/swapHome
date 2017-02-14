@@ -51,7 +51,7 @@
       href="#filterForm"><i class="material-icons left">filter_list</i> filtrer</a>
   </div>
   <!-- main part -->
-  <div class="col s10 css3-s4">
+  <div class="col s10 css3-s1 css3-m2 css3-l3">
     <c:set var="index" value="0"/>
     <c:forEach items="${housings}" var="item">
       <c:set var="isApartment" value="false"/>
@@ -75,7 +75,7 @@
                   </li>
                 </c:if>
                 <li class="collection-item">Nombre de chambres
-                  <span class="badge" data-badge-caption="chambre(s)"><c:out value="${item.roomNumber}"/></span>
+                  <span class="badge"><c:out value="${item.roomNumber}"/></span>
                 </li>
               </ul>
             </div>
@@ -88,6 +88,15 @@
                   <span class="badge"><c:out value="${item.countryP2}"/></span>
                 </li>
               </ul>
+            </div>
+            <div class="col s12 css3-l3">
+              <c:if test="${not empty item.images}">
+                <c:forEach items="${item.images}" var="image">
+                  <div class="card">
+                    <img class="materialboxed" src='<%= request.getContextPath() %>/${image.name}'/>
+                  </div>
+                </c:forEach>
+              </c:if>
             </div>
           </div>
         </div>

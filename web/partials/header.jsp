@@ -32,7 +32,17 @@
           </c:if>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-          <li><a href="#">Navbar Link</a></li>
+          <c:if test="${ !empty sessionScope.emailUser and sessionScope.isAdminUser }">
+            <li><a href="<%= request.getContextPath() %>/user/admin"><i class="material-icons left">create</i>Modération</a></li>
+          </c:if>
+          <c:if test="${ !empty sessionScope.emailUser }">
+            <li><a href="<%= request.getContextPath() %>/user/home"><i class="material-icons left">account_box</i>Mon compte</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/disconnect"><i class="material-icons left">input</i>Déconnexion</a>
+          </c:if>
+          <c:if test="${ empty sessionScope.emailUser }">
+            <li><a href="<%= request.getContextPath() %>/user/register"><i class="material-icons left">assignment_ind</i>Inscription</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/auth"><i class="material-icons left">account_circle</i>Se Connecter</a></li>
+          </c:if>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>

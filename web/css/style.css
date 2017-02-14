@@ -69,12 +69,7 @@ fieldset.no-padding legend {
 .no-margin {
   margin: 0!important;
 }
-.col.css3-s4 {
-  -webkit-column-count: 4; /* Chrome, Safari, Opera */
-  -moz-column-count: 4; /* Firefox */
-  column-count: 4;
-}
-.col.css3-s4 > .card {
+.col > .card {
   display: inline-block;
 }
 .btn-flat {
@@ -82,4 +77,27 @@ fieldset.no-padding legend {
 }
 .btn-flat i.left {
   margin-right:10px;
+}
+.card img {
+  width:100%;
+}
+
+.col.css3-l3 {
+  -webkit-column-count: 3; /* Chrome, Safari, Opera */
+  -moz-column-count: 3; /* Firefox */
+  column-count: 3;
+}
+@media screen and (max-width: 992px) {
+  .col.css3-m2 {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+  }
+}
+@media screen and (max-width: 600px) {
+  .col.css3-s1 {
+    -webkit-column-count: 1!; /* Chrome, Safari, Opera */
+    -moz-column-count: 1; /* Firefox */
+    column-count: 1;
+  }
 }

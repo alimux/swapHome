@@ -11,7 +11,7 @@
     <a class="waves-effect waves-light btn-flat"
       href="../../housing/create?type=apartment"><i class="material-icons left">add</i> Appartement</a>
   </div>
-  <div class="col s10 css3-s4">
+  <div class="col s10 css3-s1 css3-m2 css3-l3">
     <!-- main part -->
     <c:set var="index" value="0"/>
     <c:forEach items="${housings}" var="item">
@@ -36,7 +36,7 @@
                   </li>
                 </c:if>
                 <li class="collection-item">Nombre de chambres
-                  <span class="badge" data-badge-caption="chambre(s)"><c:out value="${item.roomNumber}"/></span>
+                  <span class="badge"><c:out value="${item.roomNumber}"/></span>
                 </li>
               </ul>
             </div>
@@ -50,6 +50,15 @@
                 </li>
               </ul>
             </div>
+          </div>
+          <div class="col s12 css3-l3">
+            <c:if test="${not empty item.images}">
+              <c:forEach items="${item.images}" var="image">
+                <div class="card">
+                  <img class="materialboxed" src='<%= request.getContextPath() %>/${image.name}'/>
+                </div>
+              </c:forEach>
+            </c:if>
           </div>
         </div>
         <div class="modal-footer">
