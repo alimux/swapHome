@@ -16,7 +16,7 @@ import users.db.UserHandler;
 import utils.Utils;
 
 /**
- * Classe permettant de créer des logements
+ * Class which can to create a new housing
  * @author Logan Lepage & Alexandre DUCREUX
  */
  @MultipartConfig(fileSizeThreshold=1024*1024*10,    // 10 MB
@@ -65,7 +65,13 @@ public class EditServlet extends HttpServlet
                 : "/housing/editHouse.jsp"
         ).forward(request, response);
     }
-
+    /**
+     * data processing
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException

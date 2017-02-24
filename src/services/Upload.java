@@ -9,7 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 /**
- * @author Logan LEPAGE et Alexandre DUCREUX
+ * @author Alexandre DUCREUX & Logan LEPAGE
+ * Class which manage images upload
  */
 public class Upload {
     
@@ -28,7 +29,14 @@ public class Upload {
         }
         return fileSaveDir;
     }
-    
+    /**
+     * list of upload files
+     * @param request
+     * @param name
+     * @return
+     * @throws IOException
+     * @throws ServletException 
+     */
     public static List<Part> getParts(HttpServletRequest request, String name) 
     throws IOException, ServletException {
         return request.getParts().stream().filter(part -> name.equals(part.getName())).collect(Collectors.toList());
@@ -63,7 +71,12 @@ public class Upload {
             System.out.println("Fichier "+fileName +" ajouté au repertoire : "+fileSaveDir+File.separator+fileName);
         }
     }
-    
+    /**
+     * Method which remove an image
+     * @param fileSaveDir
+     * @param fileName
+     * @throws IOException 
+     */
     public static void removeFile(File fileSaveDir, String fileName) 
     throws IOException {
         try{
@@ -103,10 +116,19 @@ public class Upload {
         }
         return null;
     }
-    
+    /**
+     * Check type of file jpeg, png
+     * @param part
+     * @return boolean
+     */
     public static boolean isImage(Part part) {
         return part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg");
     }
+    /**
+     * retrieve image format
+     * @param part
+     * @return 
+     */
     public static String getImageFormat(Part part) {
         return part.getContentType().split("/")[1];
     }

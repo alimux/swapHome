@@ -31,7 +31,7 @@ public class RegisterServlet extends HttpServlet {
 
     /**
      * retrieve form informations
-     *
+     * data processing
      * @param request
      * @param response
      * @throws ServletException

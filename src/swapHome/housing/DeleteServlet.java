@@ -11,7 +11,7 @@ import users.db.User;
 import users.db.UserHandler;
 
 /**
- * Classe permettant de supprimer des logements
+ * Class which manage the deleting of housing
  * @author Logan Lepage & Alexandre DUCREUX
  */
 public class DeleteServlet extends HttpServlet

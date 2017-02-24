@@ -8,7 +8,7 @@ import javax.servlet.*;
 import policies.Auth;
 
 /**
- * Classe permettant de lister des logements
+ * Class which are listing housing
  * @author Logan Lepage & Alexandre DUCREUX
  */
 public class HousingOffersServlet extends HttpServlet
@@ -35,7 +35,13 @@ public class HousingOffersServlet extends HttpServlet
         //sending informations
         this.getServletContext().getRequestDispatcher("/user/home/offers.jsp").forward(request, response);
     }
-
+    /**
+     * data processing
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException

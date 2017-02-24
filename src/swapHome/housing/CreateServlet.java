@@ -38,6 +38,7 @@ public class CreateServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
     {
+         //check auth
         if(!Auth.isAuthenticated(request))
             { response.sendRedirect("../user/auth"); return; }
 
@@ -52,7 +53,13 @@ public class CreateServlet extends HttpServlet
           : "/housing/createApartment.jsp"
         ).forward(request, response);
     }
-
+    /**
+     * data processing
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException

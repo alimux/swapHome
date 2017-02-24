@@ -10,6 +10,7 @@ import static swapHome.housing.CreateServlet.SAVE_PATH;
 
 /**
  * @author Logan LEPAGE et Alexandre DUCREUX
+ * Test class
  */
 public class Fixtures {
 
